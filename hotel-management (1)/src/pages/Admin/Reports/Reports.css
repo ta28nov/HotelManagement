@@ -1,0 +1,240 @@
+/**
+ * Reports.css
+ *
+ * Vai trò: Định dạng giao diện cho trang báo cáo thống kê.
+ * Chức năng:
+ * - Định dạng tabs báo cáo
+ * - Định dạng các biểu đồ
+ * - Định dạng các điều khiển báo cáo
+ * - Định dạng responsive
+ */
+
+/* =====================
+   Reports Page Styles
+===================== */
+
+.reports-container {
+  padding: 25px;
+  background-color: #f9fafb; /* Light background */
+  min-height: calc(100vh - 60px); /* Adjust based on header height */
+}
+
+/* Page Header (Title) */
+.reports-container .page-header {
+  display: flex;
+  justify-content: space-between; /* Keep space for potential future buttons */
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.reports-container .page-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Tabs */
+.report-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280; /* Inactive tab color */
+  position: relative;
+  transition: color 0.2s ease-in-out;
+  border-bottom: 3px solid transparent; /* Placeholder for active border */
+  margin-bottom: -2px; /* Overlap container border */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  color: #374151;
+}
+
+.tab-button.active {
+  color: #1a1a2e; /* New primary color */
+  border-bottom-color: #1a1a2e; /* New primary color */
+  font-weight: 600;
+  background-color: transparent; /* Override background from global var */
+}
+
+/* Controls Card (Date Range) */
+.report-controls {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.06);
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap;
+  justify-content: space-between; /* Space out quick select and date range */
+  align-items: center;
+  gap: 20px; /* Gap between sections */
+}
+
+/* Quick Select Buttons Area */
+.quick-select-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+}
+
+/* Individual Quick Select Button */
+.quick-select-btn {
+  padding: 8px 15px;
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-radius: 6px;
+  background-color: #ffffff; /* White background */
+  color: #374151; /* Dark gray text */
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.quick-select-btn:hover {
+  background-color: #f3f4f6; /* Light gray background on hover */
+  border-color: #adb5bd;
+}
+
+/* Active Quick Select Button */
+.quick-select-btn.active {
+  background-color: #1a1a2e; /* Dark primary background */
+  color: #ffffff; /* White text */
+  border-color: #1a1a2e; /* Dark primary border */
+  font-weight: 600;
+}
+
+/* Date Range Area */
+.date-range {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  align-items: center;
+  gap: 15px; /* Adjust gap for date inputs */
+}
+
+.date-input {
+  display: flex;
+  flex-direction: column; /* Label above input */
+  gap: 5px;
+}
+
+.date-input label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.date-input input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #111827;
+  min-width: 160px; /* Ensure date inputs have enough width */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.date-input input[type="date"]:focus {
+  border-color: #1a1a2e; /* New primary color */
+  box-shadow: 0 0 0 2px rgba(26, 26, 46, 0.2); /* New primary color with alpha */
+  outline: none;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.1rem;
+  /* Add a spinner or skeleton here if desired */
+}
+
+/* Chart Container & Wrapper */
+.chart-container {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px; /* Spacing between charts if multiple were present */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.chart-container h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 400px; /* Default height, adjust as needed */
+  width: 100%;
+}
+
+/* No Data Message */
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-style: italic;
+  background-color: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  border-radius: 6px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .reports-container {
+    padding: 15px;
+  }
+  .reports-container .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .tab-button {
+    padding: 10px 15px;
+    font-size: 0.95rem;
+  }
+  .report-controls,
+  .chart-container {
+    padding: 15px;
+  }
+  .date-range {
+    gap: 15px;
+  }
+  .date-input {
+    flex-basis: calc(50% - 8px); /* Two inputs per row */
+    flex-grow: 1;
+  }
+  .chart-wrapper {
+    height: 350px; /* Slightly smaller height on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .date-input {
+    flex-basis: 100%; /* One input per row on very small screens */
+  }
+  .chart-wrapper {
+    height: 300px;
+  }
+}
+

@@ -1,0 +1,141 @@
+/* RoomTypeForm.css */
+/* Inherit base modal/form styles from common styles if available */
+/* @import url("../../common/CommonStyles.css"); */
+
+/* Scoped styles for RoomTypeForm, assuming it's used within a modal */
+.roomtype-form {
+  max-width: 500px; /* Slightly narrower based on image */
+  margin: auto;
+  padding: 1.5rem 2rem; /* Added padding inside the form container */
+  background-color: #fff; /* Explicitly set solid white background */
+  border-radius: var(--border-radius-large); /* Match modal style */
+  box-shadow: var(--box-shadow-medium); /* Add shadow like other modals */
+}
+
+.roomtype-form h2 {
+    margin-bottom: 2rem; /* Increased spacing */
+    font-size: 1.5rem; /* Slightly larger title */
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.roomtype-form .form-group {
+  margin-bottom: 1.3rem; /* Slightly increased spacing */
+}
+
+.roomtype-form label {
+  display: block;
+  margin-bottom: 0.6rem; /* Increased spacing */
+  font-weight: 500; /* Slightly less bold */
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.roomtype-form input[type="text"],
+.roomtype-form input[type="number"],
+.roomtype-form textarea {
+  width: 100%;
+  padding: 0.8rem 1rem; /* Adjusted padding */
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-medium);
+  font-size: 0.95rem;
+  background-color: #fff; /* Explicitly set solid white background for inputs */
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.roomtype-form textarea {
+  min-height: 100px; /* Increased default height */
+  resize: vertical;
+}
+
+.roomtype-form input:focus,
+.roomtype-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-lightest); /* Adjusted focus shadow */
+}
+
+.roomtype-form input[aria-invalid="true"],
+.roomtype-form textarea[aria-invalid="true"] /* Added textarea */ {
+  border-color: var(--danger-color) !important;
+  box-shadow: 0 0 0 1px var(--danger-color); /* Add subtle shadow for error */
+}
+
+.roomtype-form .error-message {
+  color: var(--danger-color);
+  font-size: 0.85rem;
+  margin-top: 0.4rem; /* Increased spacing */
+  display: block;
+}
+
+.roomtype-form .required {
+  color: var(--danger-color);
+  margin-left: 3px;
+  font-weight: 600;
+}
+
+.roomtype-form .form-actions {
+  display: flex;
+  justify-content: center; /* Centered buttons */
+  gap: 1rem;
+  margin-top: 2rem; /* Increased spacing */
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color-light);
+}
+
+/* Shared button styles */
+.roomtype-form .form-button {
+  padding: 0.75rem 2rem; /* Generous padding */
+  border: none;
+  border-radius: var(--border-radius-medium);
+  font-weight: 600;
+  font-size: 0.95rem; /* Slightly larger font */
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  min-width: 120px; /* Ensure buttons have some width */
+  text-align: center;
+}
+
+/* Specific button styles based on images */
+.roomtype-form .save-button { /* Gold/Brown button */
+  background-color: #b58a3f; /* Specific gold color from image */
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.roomtype-form .save-button:hover:not(:disabled) {
+  background-color: #a0742f; /* Darker gold on hover */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.roomtype-form .cancel-button { /* White button with border */
+  background-color: white;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.roomtype-form .cancel-button:hover:not(:disabled) {
+  background-color: var(--grey-lighter); /* Slight grey on hover */
+  border-color: var(--grey-dark);
+}
+
+.roomtype-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Ensure modal overlay styles are defined (might be global or in Rooms.css) */
+/* The form itself now has a solid background, the overlay provides dimming */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Consistent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+} 

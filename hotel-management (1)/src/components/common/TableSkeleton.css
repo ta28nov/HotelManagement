@@ -1,0 +1,78 @@
+/* =====================
+   Table Skeleton Styles
+===================== */
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton-table-container {
+  /* Add any container styles if needed, e.g., padding */
+  width: 100%;
+}
+
+.skeleton-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Match your actual table border/spacing if needed */
+}
+
+.skeleton-table th,
+.skeleton-table td {
+  padding: 15px; /* Match your table cell padding */
+  vertical-align: middle;
+  border-bottom: 1px solid #eee; /* Match your table border */
+}
+
+.skeleton-table thead th {
+  /* Styles for header cells */
+  background-color: #f8f9fa; /* Match header background */
+}
+
+/* The shimmering line */
+.skeleton-line {
+  width: 100%;
+  height: 1em; /* Adjust height based on typical text size */
+  border-radius: 4px;
+  background-color: #e0e0e0; /* Base color */
+  background-image: linear-gradient(
+    90deg,
+    #e0e0e0,
+    #f0f0f0, /* Lighter shimmer color */
+    #e0e0e0
+  );
+  background-size: 1000px 100%; /* Large size for shimmer effect */
+  background-repeat: no-repeat;
+  animation: skeleton-shimmer 1.5s linear infinite;
+  display: inline-block; /* Ensure it takes block space */
+}
+
+/* Slightly different style for header lines */
+.skeleton-header {
+  height: 1.2em; /* Make header lines slightly taller */
+  background-color: #d0d0d0; /* Slightly darker base for header */
+  background-image: linear-gradient(
+    90deg,
+    #d0d0d0,
+    #e0e0e0, /* Lighter shimmer color */
+    #d0d0d0
+  );
+}
+
+/* Optional: Vary widths for more realism */
+.skeleton-table td:nth-child(2) .skeleton-line {
+  width: 85%;
+}
+.skeleton-table td:nth-child(3) .skeleton-line {
+  width: 70%;
+}
+.skeleton-table td:nth-child(4) .skeleton-line {
+  width: 90%;
+}
+/* Add more variations if needed */
+
+/* Ensure last row doesn't have a bottom border if your table doesn't */
+.skeleton-table tbody tr:last-child td {
+  border-bottom: none;
+} 

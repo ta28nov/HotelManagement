@@ -1,0 +1,131 @@
+/* Welcome Section */
+.welcome-section {
+  background-color: var(--background-alt);
+}
+
+.welcome-content {
+  display: flex;
+  gap: var(--spacing-2xl);
+  align-items: center;
+}
+
+.welcome-image {
+  flex: 1;
+}
+
+.welcome-image img {
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  height: auto;
+}
+
+.welcome-text {
+  flex: 1;
+}
+
+.welcome-text h3 {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.welcome-text p {
+  margin-bottom: var(--spacing-md);
+  line-height: 1.8;
+}
+
+/* Rooms Section */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.view-all-rooms {
+  text-align: center;
+}
+
+/* Services Section */
+.services-section {
+  background-color: var(--background-alt);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+}
+
+/* Testimonials Section */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+}
+
+/* CTA Section */
+.cta-section {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white;
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--spacing-md);
+}
+
+.cta-content p {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .rooms-grid,
+  .services-grid,
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-content {
+    flex-direction: column;
+  }
+
+  .welcome-image,
+  .welcome-text {
+    width: 100%;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .rooms-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-content h2 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .cta-content p {
+    font-size: var(--font-size-md);
+  }
+}
+

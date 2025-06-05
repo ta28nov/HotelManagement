@@ -1,0 +1,60 @@
+.parallax-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.parallax-bg {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  z-index: 1;
+}
+
+.parallax-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.parallax-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+  color: #fff;
+}
+
+/* Tối ưu hóa hiệu suất */
+.parallax-bg {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .parallax-section {
+    height: auto !important;
+    min-height: 60vh;
+  }
+
+  .parallax-bg {
+    top: 0;
+    height: 100%;
+    transform: none !important;
+  }
+}
+

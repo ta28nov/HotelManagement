@@ -1,0 +1,295 @@
+/**
+ * Dashboard.css
+ *
+ * Vai trò: Định dạng giao diện cho trang Dashboard.
+ * Chức năng:
+ * - Định dạng các thẻ thống kê
+ * - Định dạng các biểu đồ
+ * - Định dạng bảng đặt phòng gần đây
+ * - Định dạng responsive
+ */
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-title {
+  margin-bottom: 30px;
+  color: #1a1a2e;
+  font-size: 1.8rem;
+}
+
+.dashboard-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Stats Cards */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 15px;
+  color: white;
+}
+
+.rooms-icon {
+  background-color: #4caf50;
+}
+
+.bookings-icon {
+  background-color: #2196f3;
+}
+
+.customers-icon {
+  background-color: #ff9800;
+}
+
+.revenue-icon {
+  background-color: #9c27b0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-content h3 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.stat-numbers {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+.stat-main {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.stat-sub {
+  font-size: 16px;
+  color: #666;
+  margin-left: 5px;
+}
+
+.stat-label {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Charts */
+.charts-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.chart-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  min-height: 350px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart-card h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.revenue-chart {
+  grid-column: 1 / 2;
+}
+
+.occupancy-chart {
+  grid-column: 2 / 3;
+}
+
+.room-type-chart {
+  grid-column: 2 / 3;
+}
+
+/* Recent Bookings */
+.recent-bookings {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recent-bookings h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bookings-table th,
+.bookings-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.bookings-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.bookings-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-confirmed {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-pending {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.status-checked_in {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-checked_out {
+  background-color: #f5f5f5;
+  color: #616161;
+}
+
+.status-cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .revenue-chart,
+  .occupancy-chart,
+  .room-type-chart {
+    grid-column: 1;
+  }
+
+  .revenue-chart {
+    grid-row: 1;
+  }
+
+  .occupancy-chart {
+    grid-row: 2;
+  }
+
+  .room-type-chart {
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  .bookings-table th,
+  .bookings-table td {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .stat-main {
+    font-size: 20px;
+  }
+
+  .bookings-table th:nth-child(4),
+  .bookings-table td:nth-child(4),
+  .bookings-table th:nth-child(5),
+  .bookings-table td:nth-child(5) {
+    display: none;
+  }
+}
+

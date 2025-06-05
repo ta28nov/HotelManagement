@@ -1,0 +1,135 @@
+/* RoomTypeManagement.css */
+
+.room-type-management-container {
+  /* Add specific container styles if needed, */
+  /* otherwise, it might inherit from parent or global styles */
+  padding-top: 1.5rem; /* Add some padding if rendered directly under tabs */
+}
+
+/* Reuse styles from other lists or define specific ones */
+.room-type-management-container .list-header-controls {
+  /* Styles for search and add button container */
+   /* Example: Reuse from RoomList.css or CommonStyles.css */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.room-type-management-container .search-box {
+   /* Example: Reuse from RoomList.css or CommonStyles.css */
+    display: flex;
+    align-items: center;
+    background-color: var(--background-light);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-large);
+    border: 1px solid var(--border-color);
+    min-width: 300px;
+}
+
+.room-type-management-container .search-box svg {
+    color: var(--text-secondary);
+    margin-right: 0.75rem;
+}
+
+.room-type-management-container .search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    flex-grow: 1;
+}
+
+.room-type-management-container .table-container {
+   /* Example: Reuse from RoomList.css or CommonStyles.css */
+    background-color: var(--background-light);
+    border-radius: var(--border-radius-large);
+    padding: 1rem;
+    box-shadow: var(--box-shadow-light);
+    overflow-x: auto;
+    max-height: calc(100vh - 350px); /* Adjust based on overall page layout */
+    overflow-y: auto;
+}
+
+.room-type-management-container .data-table {
+   /* Example: Reuse from RoomList.css or CommonStyles.css */
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+}
+
+.room-type-management-container .data-table th {
+   /* Example: Reuse from RoomList.css or CommonStyles.css */
+    text-align: left;
+    padding: 0.8rem 1rem;
+    background-color: var(--background-accent-light);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border-bottom: 2px solid var(--border-color-light);
+}
+
+/* ... add other reused or specific styles for th, td, actions, skeleton, pagination ... */
+
+.room-type-management-container .description-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  cursor: help;
+}
+
+.room-type-management-container .action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.room-type-management-container .no-data-message {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.room-type-management-container .skeleton-row td {
+  padding: 0.9rem 1rem;
+}
+
+.room-type-management-container .skeleton-item {
+  width: 100%;
+  height: 1.2rem;
+  background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-shine) 50%, var(--skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+  border-radius: var(--border-radius-small);
+}
+.room-type-management-container .skeleton-item.short { width: 40%; }
+.room-type-management-container .skeleton-item.medium { width: 60%; }
+.room-type-management-container .skeleton-item.long { width: 90%; }
+.room-type-management-container .skeleton-item.actions { width: 60px; }
+
+.room-type-management-container .pagination-controls {
+  margin-top: 1.5rem;
+  /* Reuse common styles */
+}
+
+/* Modal overlay style might be global or defined here/in Rooms.css */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+} 

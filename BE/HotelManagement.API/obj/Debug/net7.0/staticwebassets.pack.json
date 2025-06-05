@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\.gitkeep",
+      "PackagePath": "staticwebassets\\images\\rooms\\.gitkeep"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.HotelManagement.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.HotelManagement.API.props",
+      "PackagePath": "build\\HotelManagement.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.HotelManagement.API.props",
+      "PackagePath": "buildMultiTargeting\\HotelManagement.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.HotelManagement.API.props",
+      "PackagePath": "buildTransitive\\HotelManagement.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

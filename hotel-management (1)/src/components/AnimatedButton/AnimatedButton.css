@@ -1,0 +1,101 @@
+.animated-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Kích thước */
+.animated-button--small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.animated-button--medium {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.animated-button--large {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+/* Biến thể */
+.animated-button--primary {
+  background-color: #1a1a2e;
+  color: #ffffff;
+}
+
+.animated-button--secondary {
+  background-color: #e6e6e6;
+  color: #1a1a2e;
+}
+
+.animated-button--outline {
+  background-color: transparent;
+  color: #1a1a2e;
+  border: 1px solid #1a1a2e;
+}
+
+.animated-button--text {
+  background-color: transparent;
+  color: #1a1a2e;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Chiều rộng đầy đủ */
+.animated-button--full-width {
+  width: 100%;
+}
+
+/* Trạng thái disabled */
+.animated-button:disabled {
+  cursor: not-allowed;
+}
+
+/* Icon */
+.animated-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animated-button__icon--left {
+  margin-right: 0.5rem;
+}
+
+.animated-button__icon--right {
+  margin-left: 0.5rem;
+}
+
+/* Hiệu ứng nền */
+.animated-button__background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Đường viền cho biến thể outline */
+.animated-button__border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+I'll help you develop a Vite-based ReactJS hotel management application with the structure and requirements you've specified. Let's create a clean, well-organized project with pure CSS styling and proper directory structure.
+

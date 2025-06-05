@@ -1,0 +1,511 @@
+/**
+ * Rooms.css
+ *
+ * Vai trò: Định dạng giao diện cho trang quản lý phòng.
+ * Chức năng:
+ * - Định dạng container
+ * - Định dạng loading spinner
+ */
+
+.admin-rooms-container {
+  padding: 2rem;
+  background-color: var(--background-primary);
+  min-height: calc(100vh - var(--navbar-height, 60px));
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Tab Styles */
+.admin-tabs {
+  display: flex;
+  margin-bottom: 1.5rem; /* Space between tabs and content */
+  border-bottom: 2px solid var(--border-color-light);
+}
+
+.tab-button {
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid transparent; /* Indicator */
+  margin-bottom: -2px; /* Overlap border-bottom of container */
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.tab-button:hover {
+  color: var(--text-primary);
+}
+
+.tab-button.active {
+  color: var(--primary-color);
+  font-weight: 600;
+  border-bottom-color: var(--primary-color);
+}
+
+/* Container chính */
+.rooms-container {
+  padding: 25px 30px;
+  background-color: #f9fafb; /* Nền hơi xám */
+  min-height: calc(100vh - 60px); /* Giả sử header cao 60px */
+}
+
+/* Phần header của trang (Tìm kiếm + Nút Thêm) */
+.list-header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+/* Search Box */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  width: 100%;
+  max-width: 350px; /* Giới hạn chiều rộng */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.search-box svg {
+  color: #9ca3af; /* Màu icon xám */
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #374151;
+  transition: box-shadow 0.2s ease;
+}
+
+.search-box input::placeholder {
+    color: #9ca3af;
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Add New Button */
+.add-new-button { /* Đổi tên class */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background-color: #1a1a2e; /* Màu chính */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.add-new-button:hover {
+  background-color: #0f3460;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.add-new-button svg {
+    font-size: 0.8rem;
+}
+
+/* Table Container */
+.table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e5e7eb;
+  overflow: hidden; /* Giữ cái này */
+  /* Thêm giới hạn chiều cao và scroll */
+  max-height: calc(100vh - 280px); /* Tính toán chiều cao tối đa, trừ đi chiều cao dự kiến của header, search, pagination, padding, etc. Điều chỉnh con số 280px nếu cần */
+  overflow-y: auto; /* Cho phép cuộn dọc khi nội dung vượt quá max-height */
+}
+
+/* Data Table (Class chung) */
+.data-table {
+  width: 100%;
+  border-collapse: collapse; /* Dùng collapse */
+  /* border-spacing: 0; */
+  min-width: 800px; /* Tăng min-width */
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 16px; /* Giảm padding chút */
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb; /* Border nhạt hơn */
+  vertical-align: middle;
+  font-size: 0.9rem; /* Đồng bộ font size */
+  color: #374151; /* Màu chữ chính */
+}
+
+.data-table th {
+  background-color: #f9fafb; /* Màu nền header */
+  font-weight: 600;
+  color: #4b5563; /* Màu chữ header */
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* border-top: 1px solid #e5e7eb; */ /* Bỏ border top */
+  border-bottom-width: 1px; /* Border dưới header */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.data-table th span {
+    font-size: 0.75em;
+    margin-left: 4px;
+    color: #9ca3af;
+}
+
+/* Làm nổi bật header cột đang được sort */
+.data-table th.sort-asc,
+.data-table th.sort-desc {
+    background-color: #f3f4f6; /* Nền hơi khác */
+    color: #1f2937; /* Chữ đậm hơn */
+}
+
+.data-table th.sort-asc span,
+.data-table th.sort-desc span {
+    color: #1f2937; /* Icon sort rõ hơn */
+}
+
+/* Thêm style cho hàng lẻ/chẵn để dễ đọc hơn */
+.data-table tbody tr:nth-child(even):not(.skeleton-row) {
+    background-color: #f9fafb; /* Màu nền nhạt cho hàng chẵn */
+}
+
+.data-table tbody tr:hover {
+  background-color: #eff6ff; /* Màu xanh dương rất nhạt khi hover */
+}
+
+/* Status Badge Styles (tinh chỉnh) */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  border: 1px solid transparent; /* Thêm border để giữ layout */
+}
+
+.status-available {
+  background-color: #dcfce7; /* Màu nền xanh lá nhạt */
+  color: #166534; /* Màu chữ xanh lá đậm */
+  border-color: #bbf7d0;
+}
+
+.status-occupied {
+  background-color: #ffedd5; /* Cam nhạt */
+  color: #9a3412; /* Cam đậm */
+  border-color: #fed7aa;
+}
+
+.status-cleaning {
+  background-color: #dbeafe; /* Xanh dương nhạt */
+  color: #1e40af; /* Xanh dương đậm */
+  border-color: #bfdbfe;
+}
+
+.status-maintenance {
+  background-color: #fee2e2; /* Đỏ nhạt */
+  color: #991b1b; /* Đỏ đậm */
+  border-color: #fecaca;
+}
+
+/* Action Buttons (Giữ nguyên hoặc tinh chỉnh nếu cần) */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.edit-button,
+.delete-button {
+  background: none;
+  border: none;
+  font-size: 1rem; /* Giảm nhẹ icon size */
+  cursor: pointer;
+  color: #6b7280; /* Màu icon mặc định xám */
+  transition: color 0.2s ease, transform 0.1s ease;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.edit-button:hover {
+  color: #1d4ed8; /* Xanh dương sáng hơn */
+  transform: scale(1.1);
+}
+
+.delete-button:hover {
+  color: #dc2626; /* Đỏ sáng hơn */
+  transform: scale(1.1);
+}
+
+/* Form Modal Overlay (Class chung) */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(17, 24, 39, 0.6); /* Nền tối hơn + blur */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  padding: 20px; /* Thêm padding để modal không chạm viền */
+}
+
+/* Room Form Modal Content */
+.room-form-modal-content { /* Class này được render bởi RoomForm */
+  background-color: #fff;
+  padding: 0; /* Bỏ padding ở đây, dùng padding trong header/body */
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 500px; /* Giữ nguyên max-width */
+  animation: slideInFade 0.25s ease-out;
+  max-height: calc(100vh - 40px); /* Đảm bảo không tràn màn hình */
+  display: flex; /* Dùng flex để chia header/body */
+  flex-direction: column;
+  overflow: hidden; /* Cắt góc tròn */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+  font-weight: 600;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+}
+.close-button:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* Room Form Container (phần body của modal) */
+.room-form-container {
+  padding: 24px;
+  overflow-y: auto; /* Scroll nếu nội dung dài */
+  flex-grow: 1; /* Chiếm phần còn lại của modal */
+}
+
+.room-form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.room-form-container label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500; /* Giảm độ đậm */
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+/* Input/Select Styles */
+.room-form-container input[type="text"],
+.room-form-container input[type="number"],
+.room-form-container select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px; /* Bo tròn hơn */
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  background-color: #fff; /* Nền trắng */
+  color: #1f2937;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-form-container select {
+    /* Giữ nguyên style icon dropdown */
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="%236b7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 8l4 4 4-4"/></svg>');
+    background-position: right 0.7rem center;
+    background-repeat: no-repeat;
+    background-size: 1.1em 1.1em;
+    padding-right: 2.5rem;
+}
+
+.room-form-container input:focus,
+.room-form-container select:focus {
+  border-color: #2563eb; /* Màu focus xanh dương */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Form Actions */
+.room-form-container .form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.room-form-container .save-button,
+.room-form-container .cancel-button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-form-container .save-button {
+  background-color: #1a1a2e;
+  color: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.room-form-container .save-button:hover:not(:disabled) {
+  background-color: #0f3460;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.room-form-container .cancel-button {
+  background-color: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.room-form-container .cancel-button:hover {
+  background-color: #f9fafb;
+}
+
+.room-form-container .save-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    font-size: 0.9rem;
+}
+
+.pagination-controls .page-info {
+    color: #4b5563;
+}
+
+.pagination-controls .page-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.pagination-controls .page-buttons button {
+  padding: 6px 12px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  color: #374151;
+}
+
+.pagination-controls .page-buttons button:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #adb5bd;
+}
+
+.pagination-controls .page-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-controls select {
+  padding: 7px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #374151;
+  background-color: #fff;
+  margin: 0 5px;
+}
+
+/* Keyframes (giữ nguyên) */
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes skeleton-loading {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* CSS cho thông báo info trong form */
+.info-message {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+

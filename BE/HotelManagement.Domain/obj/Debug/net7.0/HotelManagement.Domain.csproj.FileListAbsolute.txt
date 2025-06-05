@@ -1,0 +1,55 @@
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\Filehoanchinh\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\admin\Documents\Zalo Received Files\BE\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\HOTELCLONEGITHUB\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\Filehoanchinh\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll

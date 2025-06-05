@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "O+ywQi1xAHjNzDlzinKpNBWks0APIUg8TBfsYNP6f1U=",
+  "Source": "HotelManagement.API",
+  "BasePath": "_content/HotelManagement.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "HotelManagement.API\\wwwroot",
+      "Source": "HotelManagement.API",
+      "ContentRoot": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\",
+      "BasePath": "_content/HotelManagement.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\.gitkeep",
+      "SourceId": "HotelManagement.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\",
+      "BasePath": "_content/HotelManagement.API",
+      "RelativePath": "images/rooms/.gitkeep",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\rooms\\.gitkeep"
+    }
+  ]
+}

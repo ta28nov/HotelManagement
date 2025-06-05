@@ -1,0 +1,838 @@
+/**
+ * Services.css
+ *
+ * Vai trò: Định dạng giao diện cho trang quản lý dịch vụ.
+ * Chức năng:
+ * - Định dạng bảng dịch vụ
+ * - Định dạng các nút thao tác
+ * - Định dạng phần tìm kiếm và lọc
+ * - Định dạng phân trang
+ * - Định dạng responsive
+ */
+
+.services-container {
+  padding: 25px 30px;
+  background-color: #f9fafb;
+  min-height: calc(100vh - 60px);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #1a1a2e;
+  font-size: 1.8rem;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #1a1a2e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-button:hover {
+  background-color: #16213e;
+}
+
+.filter-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.search-box svg {
+  color: #9ca3af;
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #374151;
+  transition: box-shadow 0.2s ease;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.search-box input:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.filter-button,
+.reset-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-button {
+  background-color: #1a1a2e;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-button:hover {
+  background-color: #16213e;
+}
+
+.reset-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.reset-button:hover {
+  background-color: #e0e0e0;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.services-table { /* Alias for .data-table specific to this page if needed */
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.services-table th, /* Alias for .data-table th */
+.services-table td { /* Alias for .data-table td */
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.services-table th { /* Alias for .data-table th */
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap; /* Ensure headers don't wrap */
+}
+
+.services-table tbody tr:nth-child(even):not(.skeleton-row) {
+  background-color: #f9fafb;
+}
+
+.services-table tbody tr:hover {
+  background-color: #f0f3f7; /* Softer hover */
+}
+
+.description-cell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px; /* Pill shape */
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  text-align: center;
+  min-width: 80px;
+}
+
+.status-available { /* Renamed to match Rooms */
+  background-color: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.status-unavailable { /* Renamed to match Rooms */
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start; /* Align left within cell */
+}
+
+.edit-button,
+.delete-button {
+  background: none;
+  border: none;
+  padding: 5px; /* Add some padding */
+  border-radius: 4px;
+  font-size: 0.95rem; /* Slightly smaller */
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+  display: flex; /* Align icon */
+  align-items: center;
+}
+
+.edit-button {
+  color: #2563eb; /* Blue */
+}
+
+.edit-button:hover {
+  color: #1d4ed8;
+  background-color: #eff6ff; /* Light blue background on hover */
+}
+
+.delete-button {
+  color: #dc2626; /* Red */
+}
+
+.delete-button:hover {
+  color: #b91c1c;
+  background-color: #fee2e2; /* Light red background on hover */
+}
+
+.pagination { /* Renamed for consistency */
+  display: flex;
+  justify-content: space-between; /* Space out elements */
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px; /* Adjust padding */
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.pagination .page-info {
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.pagination .page-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+
+.pagination button {
+  padding: 6px 10px;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  color: #374151;
+  font-weight: 500;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #adb5bd;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination select {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #374151;
+}
+
+
+/* Placeholder for service form - REMOVED as modal is implemented */
+
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+    width: 100%; /* Take full width */
+    margin-top: 15px; /* Add space when stacked */
+  }
+  .filter-group-inline {
+    width: 100%; /* Make filter take full width */
+    justify-content: flex-end; /* Align filter to the right */
+  }
+  .filter-group-inline select {
+    max-width: 250px; /* Limit filter width */
+  }
+  .list-header-controls {
+      flex-direction: column;
+      align-items: stretch; /* Stretch items */
+  }
+  .search-box {
+      max-width: none; /* Full width search */
+      margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-container {
+    padding: 20px;
+  }
+
+  /* Hide description column */
+  .services-table th:nth-child(3),
+  .services-table td:nth-child(3) {
+    display: none;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .pagination .page-info {
+      text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+   /* Hide category column */
+  .services-table th:nth-child(2),
+  .services-table td:nth-child(2) {
+    display: none;
+  }
+   .services-container {
+    padding: 15px;
+  }
+}
+
+/* Header Controls (Giống Rooms) */
+.list-header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 15px; /* Add gap for wrapped items */
+}
+
+/* Search Box (Giống Rooms) */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  /* width: 100%; Removed for better flex behavior */
+  max-width: 350px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  flex-grow: 1; /* Allow search box to grow */
+}
+.search-box svg { color: #9ca3af; margin-right: 8px; font-size: 0.9rem; }
+.search-box input { flex: 1; border: none; outline: none; font-size: 0.95rem; color: #374151; transition: box-shadow 0.2s ease; background: none; }
+.search-box input::placeholder { color: #9ca3af; }
+.search-box input:focus { box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+
+/* Header Actions (Filter + Add Buttons) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Khoảng cách giữa các nút và filter */
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    justify-content: flex-end; /* Align items to the end */
+    flex-grow: 1; /* Allow actions to take remaining space */
+}
+
+.filter-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group-inline label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Khoảng cách giữa icon và text */
+    flex-shrink: 0; /* Prevent label from shrinking */
+}
+.filter-group-inline label svg {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.filter-group-inline select {
+    padding: 7px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #374151;
+    background-color: #fff;
+    min-width: 180px; /* Độ rộng tối thiểu cho select */
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="%236b7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 8l4 4 4-4"/></svg>');
+    background-position: right 0.7rem center;
+    background-repeat: no-repeat;
+    background-size: 1.1em 1.1em;
+    padding-right: 2.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0; /* Prevent select from shrinking */
+}
+.filter-group-inline select:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Add Category/New Buttons (Tương tự Rooms) */
+.add-category-button,
+.add-new-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  white-space: nowrap; /* Prevent button text wrapping */
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+.add-category-button {
+    background-color: #e0e7ff; /* Màu nền xanh nhạt */
+    color: #3730a3; /* Màu chữ xanh đậm */
+}
+.add-category-button:hover:not(:disabled) {
+    background-color: #c7d2fe;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-new-button {
+  background-color: #1a1a2e;
+  color: white;
+}
+.add-new-button:hover:not(:disabled) {
+  background-color: #0f3460;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-category-button svg,
+.add-new-button svg {
+    font-size: 0.8rem;
+}
+
+.add-category-button:disabled,
+.add-new-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Table Container & Data Table (Using shared classes with Rooms) */
+.table-container {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); /* Subtle shadow */
+  margin-bottom: 20px; /* Space below table */
+  border: 1px solid #e5e7eb; /* Added border */
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem; /* Slightly smaller table font */
+}
+
+.data-table th, .data-table td {
+  padding: 12px 15px; /* Adjust padding */
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb; /* Consistent border color */
+  vertical-align: middle; /* Align cell content vertically */
+}
+
+.data-table th {
+  background-color: #f9fafb; /* Lighter header */
+  font-weight: 600;
+  color: #374151; /* Darker grey header text */
+  cursor: pointer; /* Indicate sortable */
+  white-space: nowrap;
+}
+.data-table th span { /* Sorting indicator */
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+.data-table th.sort-asc, .data-table th.sort-desc {
+  background-color: #f3f4f6; /* Slightly darker when sorted */
+}
+
+.data-table tbody tr:nth-child(even):not(.skeleton-row) {
+  background-color: #f9fafb; /* Slightly different even row color */
+}
+.data-table tbody tr:hover {
+  background-color: #f0f3f7; /* Consistent hover */
+}
+
+/* Status Badge (Using shared classes with Rooms) */
+/* Styles defined above for .status-badge, .status-active, .status-inactive */
+
+
+/* Action Buttons (Using shared classes with Rooms) */
+/* Styles defined above for .action-buttons, .edit-button, .delete-button */
+
+
+/* Form Modal Overlay (Using shared class) */
+.form-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Ensure it's above other content */
+  padding: 20px; /* Add padding for smaller screens */
+  overflow-y: auto; /* Allow scrolling if modal content is too tall */
+  -webkit-backdrop-filter: blur(3px); /* Safari support */
+  backdrop-filter: blur(3px); /* Optional blur effect */
+}
+
+/* Service Form Modal Content */
+.service-form-modal-content {
+    background-color: #fff;
+    padding: 0; /* Remove padding, handled by header/container */
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 600px; /* Rộng hơn chút cho description */
+    animation: slideInFade 0.25s ease-out;
+    max-height: calc(100vh - 40px); /* Limit height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content spill */
+}
+
+/* Category Form Modal Content */
+.category-form-modal-content {
+    background-color: #fff;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 450px; /* Hẹp hơn service form */
+    animation: slideInFade 0.25s ease-out;
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Modal Header (Shared) */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px; /* Easier click target */
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+.close-button:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Service/Category Form Container (Phần body - Shared) */
+.service-form-container, .category-form-container {
+  padding: 24px;
+  overflow-y: auto; /* Scroll only the form content */
+  flex-grow: 1; /* Allow container to grow */
+}
+
+/* Form Group, Label, Input, Select, Textarea (Shared) */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+.service-form-container input[type="text"],
+.service-form-container input[type="number"],
+.service-form-container select,
+.service-form-container textarea,
+.category-form-container input[type="text"],
+.category-form-container textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+      background-color: #fff;
+      color: #1f2937;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.service-form-container select {
+    /* Add dropdown arrow styles if needed, similar to filter select */
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="%236b7280" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 8l4 4 4-4"/></svg>');
+    background-position: right 0.7rem center;
+    background-repeat: no-repeat;
+    background-size: 1.1em 1.1em;
+    padding-right: 2.5rem;
+}
+.service-form-container textarea, .category-form-container textarea {
+    min-height: 80px; /* Chiều cao tối thiểu cho textarea */
+    resize: vertical; /* Allow vertical resize */
+}
+
+.service-form-container input:focus,
+.service-form-container select:focus,
+.service-form-container textarea:focus,
+.category-form-container input:focus,
+.category-form-container textarea:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+/* Disabled state */
+.service-form-container input:disabled,
+.service-form-container select:disabled,
+.service-form-container textarea:disabled,
+.category-form-container input:disabled,
+.category-form-container textarea:disabled,
+.checkbox-wrapper input[type="checkbox"]:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.form-group-checkbox label {
+    margin-bottom: 10px; /* Khoảng cách cho label chính */
+}
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f9fafb; /* Nền nhẹ cho khu vực checkbox */
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+.checkbox-wrapper input[type="checkbox"] {
+    height: 1.1em;
+    width: 1.1em;
+    cursor: pointer;
+    accent-color: #1a1a2e; /* Màu checkbox */
+    margin: 0; /* Remove default margin */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.checkbox-wrapper span {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+/* Form Actions (Shared) */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb; /* Slight background for actions */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+.save-button, .cancel-button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  display: inline-flex; /* For spinner alignment */
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.save-button {
+  background-color: #1a1a2e;
+  color: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.save-button:hover:not(:disabled) {
+  background-color: #0f3460;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.cancel-button {
+  background-color: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.cancel-button:hover {
+  background-color: #f9fafb;
+}
+.save-button:disabled, .cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Shared Styles (Error, Loading, Skeleton, etc.) */
+.loading-error-message {
+  text-align: center;
+  padding: 30px;
+  color: #b91c1c; /* Red error color */
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  margin: 20px 0;
+}
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280; /* Gray text */
+}
+.input-error { /* Apply to input/select/textarea */
+  border-color: #dc2626 !important; /* Red border for error */
+  box-shadow: 0 0 0 1px #dc2626 !important; /* Red ring for error */
+}
+.error-message {
+  color: #dc2626; /* Red text for error message */
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+.info-message {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+.spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block; /* Ensure spinner takes space */
+}
+
+/* Skeleton Loading Styles (Shared) */
+.skeleton-row {
+  opacity: 0.7;
+}
+.skeleton-cell {
+  padding: 12px 15px; /* Match table cell padding */
+  border-bottom: 1px solid #e5e7eb;
+}
+.skeleton-item {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+  border-radius: 4px;
+  height: 20px; /* Standard height */
+  width: 100%;
+}
+.skeleton-item.short { width: 40%; }
+.skeleton-item.long { width: 80%; } /* Adjusted */
+.skeleton-item.actions { width: 60px; height: 24px; } /* Approx size of buttons */
+
+
+/* Keyframes (Shared) */
+@keyframes slideInFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

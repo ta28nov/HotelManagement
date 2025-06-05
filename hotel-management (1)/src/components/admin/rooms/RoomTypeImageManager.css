@@ -1,0 +1,399 @@
+/* RoomTypeImageManager.css */
+
+.image-manager-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.image-manager-container {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.image-manager-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.image-manager-header .close-button {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #888;
+  padding: 5px;
+  line-height: 1;
+}
+.image-manager-header .close-button:hover {
+    color: #e74c3c;
+}
+
+.image-manager-content {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.upload-section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.upload-section h4 {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.upload-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.upload-label {
+    display: inline-flex; /* Use flexbox */
+    align-items: center; /* Vertically align icon and text */
+    gap: 8px; /* Space between icon and text */
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis */
+    max-width: 300px; /* Limit width */
+}
+
+.upload-label:hover {
+    background-color: #e0e0e0;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.95em;
+}
+
+.upload-button:hover {
+    background-color: #2980b9;
+}
+
+.upload-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+/* Added styles for IsPrimary checkbox */
+.is-primary-control {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.is-primary-control input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.is-primary-control label {
+    font-size: 0.9em;
+    color: #555;
+    cursor: pointer;
+}
+/* End of added styles */
+
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.image-item {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+}
+
+.image-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the area without distortion */
+}
+
+.delete-image-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(231, 76, 60, 0.8); /* Red with transparency */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  padding: 0;
+}
+
+.delete-image-button:hover {
+  background-color: rgba(192, 57, 43, 1); /* Solid red on hover */
+  opacity: 1;
+}
+
+.primary-badge {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background-color: rgba(46, 204, 113, 0.8);
+    color: white;
+    font-size: 0.75em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.image-manager-content .error-message {
+    color: #e74c3c;
+    margin-top: 10px;
+} 
+
+.image-manager-modal-content {
+  background-color: #fff; /* Explicitly set solid white background */
+  padding: 0; /* Header/body will have padding */
+  border-radius: var(--border-radius-large);
+  box-shadow: var(--box-shadow-medium);
+  width: 90%;
+  max-width: 800px; /* Allow wider modal for image grid */
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Important for controlling scroll */
+}
+
+.image-manager-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color-light);
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.image-manager-modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.image-manager-modal-header .close-button {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+.image-manager-modal-header .close-button:hover {
+  background-color: var(--grey-light);
+  color: var(--text-primary);
+}
+
+.image-manager-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1; /* Allow body to take remaining space */
+}
+
+.image-manager-error {
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
+    padding: 0.8rem 1.2rem;
+    border-radius: var(--border-radius-medium);
+    margin-bottom: 1rem;
+    border: 1px solid var(--danger-color);
+    font-size: 0.9rem;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.image-card {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-medium);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background-color: var(--background-accent-light);
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-thumbnail {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-card:hover .image-thumbnail {
+  transform: scale(1.05);
+}
+
+.primary-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  color: #ffc107;
+  font-size: 1.4rem;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+  z-index: 2;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: var(--border-radius-small);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 3;
+}
+
+.image-card:hover .image-actions {
+  opacity: 1;
+}
+
+.image-actions .action-button {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius-small);
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.image-actions .action-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 1);
+}
+.image-actions .action-button.primary-button:hover:not(:disabled) {
+  color: var(--success-color);
+}
+.image-actions .action-button.delete-button:hover:not(:disabled) {
+    color: var(--danger-color);
+}
+
+.image-actions .action-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Upload Area Styling - replacing old upload controls */
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius-medium);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--background-accent-light);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  aspect-ratio: 1 / 1;
+  color: var(--text-secondary);
+}
+
+.upload-area:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color-lightest);
+}
+
+.upload-area svg {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.upload-area span {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.upload-area:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    border-color: var(--border-color-light);
+    background-color: var(--grey-lighter);
+}
+
+/* Button in RoomTypeManagement table to open this modal */
+.manage-images-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+} 

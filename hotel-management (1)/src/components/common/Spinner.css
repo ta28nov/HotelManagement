@@ -1,0 +1,41 @@
+/* Spinner.css */
+
+@keyframes spinner-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block; /* Allows placing it inside buttons/text */
+  border-style: solid;
+  border-radius: 50%;
+  animation: spinner-rotation 0.8s linear infinite;
+  
+  /* Default color using variable or fallback */
+  border-color: var(--primary-color, #1a1a2e) transparent transparent transparent;
+}
+
+/* Default size (medium) */
+.spinner-md {
+  width: 24px;
+  height: 24px;
+  border-width: 3px; /* Default thickness for md */
+}
+
+/* Small size */
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px; /* Default thickness for sm */
+}
+
+/* Large size */
+.spinner-lg {
+  width: 40px;
+  height: 40px;
+  border-width: 4px; /* Default thickness for lg */
+} 
