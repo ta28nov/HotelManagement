@@ -53,3 +53,14 @@ C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManag
 C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
 C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
 C:\Users\Admin\FEBEDBHOTEL\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.deps.json
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\bin\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.AssemblyInfo.cs
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.dll
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\refint\HotelManagement.Domain.dll
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\HotelManagement.Domain.pdb
+C:\Users\Admin\HotelManagement\BE\HotelManagement.Domain\obj\Debug\net7.0\ref\HotelManagement.Domain.dll

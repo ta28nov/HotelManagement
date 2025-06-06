@@ -1,16 +1,18 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCalendarAlt, FaEdit, FaKey } from "react-icons/fa"
-import { toast } from "react-toastify"
+import { motion } from "framer-motion"
+import { FaUser, FaEnvelope, FaPhone, FaCalendarAlt, FaKey, FaEdit, 
+         FaFileInvoice, FaInfoCircle } from "react-icons/fa"
 import Header from "../../components/Header/Header"
 import Footer from "../../components/Footer/Footer"
 import { useAuth } from "../../context/AuthContext"
 import bookingService from "../../services/bookingService"
 import "./UserProfilePage.css"
 import ChangePasswordForm from "./components/ChangePasswordForm"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 // Helper function to format date strings (optional)
 const formatDate = (dateString) => {
@@ -45,6 +47,12 @@ const UserProfilePage = () => {
   const [bookings, setBookings] = useState([])
   const [bookingsLoading, setBookingsLoading] = useState(false)
   const [bookingsError, setBookingsError] = useState(null)
+
+  const [selectedBooking, setSelectedBooking] = useState(null)
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false)
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+  const [modalLoading, setModalLoading] = useState(false)
+  const [modalError, setModalError] = useState(null)
 
   // Initialize editData when currentUser is loaded or editing starts
   useEffect(() => {
@@ -149,6 +157,47 @@ const UserProfilePage = () => {
   const handleCancelEdit = () => {
     setIsEditing(false)
     setErrors({})
+  }
+
+  const handleViewInvoice = async (bookingId) => {
+    setModalLoading(true)
+    setModalError(null)
+    try {
+      const booking = bookings.find(b => b.id === bookingId)
+      if (!booking) {
+        throw new Error("Booking not found")
+      }
+      
+      // Fetch invoice if not already included in booking
+      if (!booking.Invoice) {
+        const invoiceResponse = await bookingEndpoints.getInvoice(bookingId)
+        booking.Invoice = invoiceResponse.data
+      }
+      
+      setSelectedBooking(booking)
+      setShowInvoiceModal(true)
+    } catch (error) {
+      console.error("Error fetching invoice:", error)
+      setModalError("Không thể tải hoá đơn. Vui lòng thử lại sau.")
+      toast.error("Không thể tải hoá đơn. Vui lòng thử lại sau.")
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
+  const handleViewDetails = (bookingId) => {
+    const booking = bookings.find(b => b.id === bookingId)
+    if (booking) {
+      setSelectedBooking(booking)
+      setShowDetailsModal(true)
+    }
+  }
+
+  const closeModals = () => {
+    setShowInvoiceModal(false)
+    setShowDetailsModal(false)
+    setSelectedBooking(null)
+    setModalError(null)
   }
 
   if (authLoading && !currentUser) {
@@ -313,27 +362,75 @@ const UserProfilePage = () => {
                   {!bookingsLoading && !bookingsError && bookings.length > 0 && (
                     <div className="bookings-list">
                       {bookings.map((booking) => (
-                        <div key={booking.id} className={`booking-card status-${booking.status?.toLowerCase() || 'unknown'}`}>
+                        <motion.div 
+                          key={booking.id} 
+                          className={`booking-card status-${booking.status?.toLowerCase() || 'unknown'}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
                           <div className="booking-header">
-                            <h3>{booking.roomTypeName || `Booking #${booking.id}`}</h3>
-                            <span className="booking-status">{booking.status || 'N/A'}</span>
+                            <div className="booking-title">
+                              <h3>{booking.roomTypeName || `Booking #${booking.id}`}</h3>
+                              <span className={`booking-status ${booking.status?.toLowerCase()}`}>
+                                {booking.status || 'N/A'}
+                              </span>
+                            </div>
+                            <div className="booking-dates">
+                              <div className="date-item">
+                                <span className="date-label">Check-in</span>
+                                <span className="date-value">{formatDate(booking.checkInDate)}</span>
+                              </div>
+                              <div className="date-separator">→</div>
+                              <div className="date-item">
+                                <span className="date-label">Check-out</span>
+                                <span className="date-value">{formatDate(booking.checkOutDate)}</span>
+                              </div>
+                            </div>
                           </div>
+
                           <div className="booking-details">
                             <div className="booking-info">
-                              <p><strong>Room:</strong> {booking.roomNumber || 'N/A'} ({booking.roomTypeName || 'N/A'})</p>
-                              <p><strong>Check-in:</strong> {formatDate(booking.checkInDate)}</p>
-                              <p><strong>Check-out:</strong> {formatDate(booking.checkOutDate)}</p>
-                              <p><strong>Guests:</strong> {booking.adults} Adults{booking.children > 0 ? `, ${booking.children} Children` : ''}</p>
-                              <p><strong>Total:</strong> {formatCurrency(booking.totalAmount)}</p>
-                              <p><strong>Payment:</strong> {booking.paymentStatus || 'N/A'}</p>
+                              <div className="info-grid">
+                                <div className="info-item">
+                                  <span className="info-label">Room</span>
+                                  <span className="info-value">{booking.roomNumber || 'N/A'} ({booking.roomTypeName || 'N/A'})</span>
+                                </div>
+                                <div className="info-item">
+                                  <span className="info-label">Guests</span>
+                                  <span className="info-value">
+                                    {booking.adults} Adults{booking.children > 0 ? `, ${booking.children} Children` : ''}
+                                  </span>
+                                </div>
+                                <div className="info-item">
+                                  <span className="info-label">Payment Status</span>
+                                  <span className={`info-value payment-status ${booking.paymentStatus?.toLowerCase()}`}>
+                                    {booking.paymentStatus || 'N/A'}
+                                  </span>
+                                </div>
+                                <div className="info-item total-amount">
+                                  <span className="info-label">Total Amount</span>
+                                  <span className="info-value">{formatCurrency(booking.totalAmount)}</span>
+                                </div>
+                              </div>
                             </div>
+
                             <div className="booking-actions">
-                              {/* Link to the booking detail page - REMOVED */}
-                              {/* <Link to={`/booking-details/${booking.id}`} className="btn btn-secondary">View Details</Link> */}
-                              {/* Placeholder for potential future actions like rebooking? */}
+                              <button 
+                                className="btn btn-primary"
+                                onClick={() => handleViewInvoice(booking.id)}
+                              >
+                                <FaFileInvoice /> View Invoice
+                              </button>
+                              <button 
+                                className="btn btn-outline"
+                                onClick={() => handleViewDetails(booking.id)}
+                              >
+                                <FaInfoCircle /> Details
+                              </button>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   )}
@@ -357,6 +454,195 @@ const UserProfilePage = () => {
       </div>
 
       <Footer />
+
+      {/* Invoice Modal */}
+      {showInvoiceModal && selectedBooking && (
+        <div className="modal-overlay" onClick={closeModals}>
+          <motion.div 
+            className="modal-content"
+            onClick={e => e.stopPropagation()}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <button className="modal-close" onClick={closeModals}>&times;</button>
+            
+            {modalLoading ? (
+              <div className="modal-loading">Loading invoice...</div>
+            ) : modalError ? (
+              <div className="modal-error">{modalError}</div>
+            ) : (
+              <div className="invoice-container">
+                <div className="invoice-header">
+                  <h2>Invoice</h2>
+                  <p>Booking #{selectedBooking.id}</p>
+                </div>
+
+                <div className="invoice-info">
+                  <div className="customer-info">
+                    <h4>Customer Details</h4>
+                    <p>{selectedBooking.customerName}</p>
+                    <p>{selectedBooking.customerEmail}</p>
+                    <p>{selectedBooking.customerPhone}</p>
+                  </div>
+                  <div className="booking-info">
+                    <h4>Booking Details</h4>
+                    <p><strong>Check-in:</strong> {formatDate(selectedBooking.checkInDate)}</p>
+                    <p><strong>Check-out:</strong> {formatDate(selectedBooking.checkOutDate)}</p>
+                    <p><strong>Room:</strong> {selectedBooking.roomNumber} ({selectedBooking.roomTypeName})</p>
+                  </div>
+                </div>
+
+                <div className="invoice-items">
+                  <div className="invoice-item header">
+                    <span>Description</span>
+                    <span>Quantity</span>
+                    <span>Price</span>
+                    <span>Total</span>
+                  </div>
+                  
+                  {/* Room Charge */}
+                  <div className="invoice-item">
+                    <span>{selectedBooking.roomTypeName}</span>
+                    <span>1</span>
+                    <span>{formatCurrency(selectedBooking.roomPrice)}</span>
+                    <span>{formatCurrency(selectedBooking.roomPrice)}</span>
+                  </div>
+
+                  {/* Services */}
+                  {selectedBooking.Services?.map((service, index) => (
+                    <div key={index} className="invoice-item">
+                      <span>{service.ServiceName}</span>
+                      <span>{service.Quantity}</span>
+                      <span>{formatCurrency(service.Price)}</span>
+                      <span>{formatCurrency(service.Price * service.Quantity)}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="invoice-total">
+                  <span>Total Amount:</span>
+                  <span>{formatCurrency(selectedBooking.totalAmount)}</span>
+                </div>
+
+                <div className="invoice-footer">
+                  <p>Thank you for choosing our hotel!</p>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      )}
+
+      {/* Details Modal */}
+      {showDetailsModal && selectedBooking && (
+        <div className="modal-overlay" onClick={closeModals}>
+          <motion.div 
+            className="modal-content"
+            onClick={e => e.stopPropagation()}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <button className="modal-close" onClick={closeModals}>&times;</button>
+            
+            <div className="booking-details-modal">
+              <h2>Booking Details</h2>
+              
+              <div className="details-section">
+                <h3>Room Information</h3>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <span className="detail-label">Room Type</span>
+                    <span className="detail-value">{selectedBooking.roomTypeName}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="detail-label">Room Number</span>
+                    <span className="detail-value">{selectedBooking.roomNumber}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="detail-label">Floor</span>
+                    <span className="detail-value">{selectedBooking.floor || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h3>Stay Information</h3>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <span className="detail-label">Check-in</span>
+                    <span className="detail-value">{formatDate(selectedBooking.checkInDate)}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="detail-label">Check-out</span>
+                    <span className="detail-value">{formatDate(selectedBooking.checkOutDate)}</span>
+                  </div>
+                  <div className="detail-item">
+                    <span className="detail-label">Duration</span>
+                    <span className="detail-value">
+                      {Math.ceil((new Date(selectedBooking.checkOutDate) - new Date(selectedBooking.checkInDate)) / (1000 * 60 * 60 * 24))} nights
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="details-section">
+                <h3>Guest Information</h3>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <span className="detail-label">Adults</span>
+                    <span className="detail-value">{selectedBooking.adults}</span>
+                  </div>
+                  {selectedBooking.children > 0 && (
+                    <div className="detail-item">
+                      <span className="detail-label">Children</span>
+                      <span className="detail-value">{selectedBooking.children}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {selectedBooking.Services && selectedBooking.Services.length > 0 && (
+                <div className="details-section">
+                  <h3>Additional Services</h3>
+                  <div className="services-list">
+                    {selectedBooking.Services.map((service, index) => (
+                      <div key={index} className="service-item">
+                        <div className="service-name">{service.ServiceName}</div>
+                        <div className="service-quantity">x{service.Quantity}</div>
+                        <div className="service-price">{formatCurrency(service.Price * service.Quantity)}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedBooking.specialRequests && (
+                <div className="details-section">
+                  <h3>Special Requests</h3>
+                  <p className="special-requests">{selectedBooking.specialRequests}</p>
+                </div>
+              )}
+
+              <div className="details-footer">
+                <div className="status-section">
+                  <div className={`status-badge ${selectedBooking.status?.toLowerCase()}`}>
+                    {selectedBooking.status}
+                  </div>
+                  <div className={`payment-badge ${selectedBooking.paymentStatus?.toLowerCase()}`}>
+                    {selectedBooking.paymentStatus}
+                  </div>
+                </div>
+                <div className="total-section">
+                  <span className="total-label">Total Amount</span>
+                  <span className="total-value">{formatCurrency(selectedBooking.totalAmount)}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

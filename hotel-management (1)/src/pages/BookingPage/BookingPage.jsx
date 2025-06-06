@@ -5,11 +5,12 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { format, differenceInCalendarDays, isValid, parseISO } from 'date-fns'
 import { toast } from 'react-toastify'
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle, FaPlus, FaMinus, FaSpinner, FaExclamationCircle } from 'react-icons/fa'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import roomEndpoints from '../../api/endpoints/roomEndpoints'
 import bookingEndpoints from '../../api/endpoints/bookingEndpoints'
+import serviceService from '../../services/serviceService'
 import { TOKEN_KEY, USER_KEY } from '../../config/constants'
 import './BookingPage.css'
 
@@ -34,6 +35,13 @@ const BookingPage = () => {
   const [availableRoomsLoading, setAvailableRoomsLoading] = useState(false)
   const [availableRoomsError, setAvailableRoomsError] = useState(null)
   const [selectedRoom, setSelectedRoom] = useState(null)
+  
+  // Add new service-related states
+  const [availableServices, setAvailableServices] = useState([])
+  const [serviceCategories, setServiceCategories] = useState([])
+  const [selectedServices, setSelectedServices] = useState({}) // { serviceId: quantity }
+  const [servicesLoading, setServicesLoading] = useState(false)
+  const [servicesError, setServicesError] = useState(null)
 
   const queryParams = new URLSearchParams(location.search)
   const queryCheckIn = queryParams.get("checkIn")
@@ -151,6 +159,40 @@ const BookingPage = () => {
     fetchAvailableRooms()
   }, [checkInDate, checkOutDate, initialRoomInfo, queryGuests])
 
+  // New effect to fetch available services based on selectedRoom
+  useEffect(() => {
+    const fetchAvailableServices = async () => {
+      if (selectedRoom && selectedRoom.id) {
+        setServicesLoading(true)
+        setServicesError(null)
+        try {
+          const response = await serviceService.getAllServices()
+          const servicesData = response.data || []
+          setAvailableServices(servicesData)
+
+          // Fetch service categories if not already fetched
+          if (servicesData.length > 0) {
+            const categoriesResponse = await serviceService.getAllCategories()
+            setServiceCategories(categoriesResponse.data || [])
+          } else {
+            setServiceCategories([])
+          }
+
+        } catch (error) {
+          console.error("[BookingPage] Error fetching services:", error)
+          setServicesError("Could not fetch services. Please try again later.")
+        } finally {
+          setServicesLoading(false)
+        }
+      } else {
+        setAvailableServices([])
+        setServiceCategories([])
+      }
+    }
+
+    fetchAvailableServices()
+  }, [selectedRoom])
+
   const handleRoomSelect = (room) => {
     setSelectedRoom(room)
     const roomCapacity = room.capacity || 1
@@ -160,6 +202,14 @@ const BookingPage = () => {
     if (guests < 1) {
       setGuests(1)
     }
+  }
+
+  const handleServiceToggle = (serviceId) => {
+    setSelectedServices((prev) => {
+      const currentQuantity = prev[serviceId] || 0
+      const newQuantity = currentQuantity > 0 ? 0 : 1 // Toggle between 0 and 1 for simplicity
+      return { ...prev, [serviceId]: newQuantity }
+    })
   }
 
   const numberOfNights = useCallback(() => {
@@ -177,7 +227,15 @@ const BookingPage = () => {
   const roomTotal = selectedRoom && numberOfNights() > 0 ? selectedRoom.basePrice * numberOfNights() : 0
   const taxRate = 0.12
   const tax = roomTotal * taxRate
-  const grandTotal = roomTotal + tax
+
+  // Calculate total services cost
+  const servicesTotal = Object.keys(selectedServices).reduce((total, serviceId) => {
+    const service = availableServices.find(s => s.id === parseInt(serviceId))
+    const quantity = selectedServices[serviceId] || 0
+    return total + (service ? service.price * quantity : 0)
+  }, 0)
+
+  const grandTotalWithServices = roomTotal + tax + servicesTotal
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -220,70 +278,96 @@ const BookingPage = () => {
 
   const handleCompleteBooking = async () => {
     if (!validateBookingForm()) {
-      toast.error("Please correct the errors in the form.")
-      return
+      toast.error("Vui lòng điền đầy đủ thông tin.")
+      return  
     }
 
-    let customerIdToUse = null 
-    const token = localStorage.getItem(TOKEN_KEY) 
-    const storedUser = localStorage.getItem(USER_KEY) 
-
-    console.log("[BookingPage] Attempting to get customer ID. Token Key Used:", TOKEN_KEY, "User Key Used:", USER_KEY);
-    console.log("[BookingPage] Token from localStorage:", token ? "Exists" : "Not Found");
-    console.log("[BookingPage] Stored user string from localStorage:", storedUser);
+    let customerIdToUse = null
+    const token = localStorage.getItem(TOKEN_KEY)
+    const storedUser = localStorage.getItem(USER_KEY)
 
     if (token && storedUser) {
-        try {
-            const parsedUser = JSON.parse(storedUser)
-            console.log("[BookingPage] Parsed user object:", parsedUser);
-            if(parsedUser && typeof parsedUser.id !== 'undefined') {
-                customerIdToUse = parsedUser.id 
-                console.log("[BookingPage] Customer ID found:", customerIdToUse);
-            } else {
-                console.warn("[BookingPage] Parsed user object does not contain a valid 'id' property.", parsedUser);
-            }
-        } catch (e) {
-            console.error("[BookingPage] Error parsing user from localStorage:", e);
-            toast.error("Error processing user information. Please try logging out and in again.")
-            return
+      try {
+        const parsedUser = JSON.parse(storedUser)
+        if(parsedUser && typeof parsedUser.id !== 'undefined') {
+          customerIdToUse = parsedUser.id
+        } else {
+          console.warn("Không tìm thấy ID người dùng trong thông tin đã lưu");
         }
-    } else {
-        console.warn("[BookingPage] Token or stored user not found in localStorage using provided keys.");
-    }
-    
-    if (!customerIdToUse) {
-        toast.error("You must be logged in to complete a booking. Please log in and try again.")
-        console.log("[BookingPage] Customer ID not resolved. Booking aborted.");
-        return
+      } catch (e) {
+        console.error("Lỗi khi lấy ID người dùng:", e)
+      }
     }
 
+    // Xây dựng payload cho đặt phòng
     const bookingPayload = {
-      CustomerId: customerIdToUse,
-      RoomId: selectedRoom.id, 
-      CheckInDate: parseISO(checkInDate).toISOString(),
-      CheckOutDate: parseISO(checkOutDate).toISOString(),
-      Adults: guests, 
-      Children: 0, 
-      TotalAmount: grandTotal, 
-      Notes: formData.specialRequests,
+      roomId: selectedRoom.id,
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
+      adults: guests,
+      children: 0,
+      notes: formData.specialRequests || "",
+      paymentMethod: formData.paymentMethod,
+      Services: Object.entries(selectedServices)
+        .filter(([_, quantity]) => quantity > 0)
+        .map(([serviceId, quantity]) => ({
+          ServiceId: parseInt(serviceId, 10),
+          ServiceDate: new Date().toISOString(), // Or use checkInDate
+          Quantity: quantity
+        }))
     }
-    console.log("[BookingPage] Booking payload prepared:", bookingPayload);
+
+    // Nếu không có customer ID (người dùng chưa đăng nhập), thêm thông tin khách
+    if (!customerIdToUse) {
+      bookingPayload.customerInfo = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phone
+      }
+    } else {
+      bookingPayload.customerId = customerIdToUse
+    }
 
     try {
       const response = await bookingEndpoints.createBooking(bookingPayload)
       if (response.data && response.data.bookingId) {
-        toast.success(response.data.message || "Booking created successfully! Fetching details...")
-        const detailsResponse = await bookingEndpoints.getBookingById(response.data.bookingId)
-        setBookingDetails(detailsResponse.data) 
+        toast.success("Đặt phòng thành công!")
+        try {
+          // Lấy chi tiết booking để hiển thị
+          const detailsResponse = await bookingEndpoints.getBookingById(response.data.bookingId)
+          setBookingDetails(detailsResponse.data)
+
+          // Đợi 1 giây để đảm bảo booking đã được tạo hoàn toàn
+          await new Promise(resolve => setTimeout(resolve, 1000))
+
+          // Tạo hóa đơn cho đặt phòng
+          await bookingEndpoints.createInvoice(response.data.bookingId)
+
+          // Đợi 0.5 giây để đảm bảo hóa đơn đã được tạo
+          await new Promise(resolve => setTimeout(resolve, 500))
+
+          // Lấy hóa đơn để hiển thị
+          const invoiceResponse = await bookingEndpoints.getInvoice(response.data.bookingId)
+          if (invoiceResponse.data) {
+            setBookingDetails(prevDetails => ({
+              ...prevDetails,
+              Invoice: invoiceResponse.data
+            }))
+          }
+        } catch (detailsError) {
+          console.error("Error fetching booking details or creating invoice:", detailsError)
+          // Vẫn hiển thị thông báo thành công vì đặt phòng đã thành công
+          toast.warning("Đặt phòng thành công nhưng không thể tạo hóa đơn. Vui lòng liên hệ nhân viên.")
+        }
         setBookingComplete(true)
         window.scrollTo(0, 0)
       } else {
-        toast.error("Failed to create booking. Unexpected response from server.")
-        console.error("Unexpected booking creation response:", response)
+        toast.error("Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại.")
       }
     } catch (error) {
-      console.error("Error creating booking:", error)
-      toast.error(error.response?.data?.message || error.response?.data?.error || "An error occurred while creating your booking. Please try again.")
+      console.error("Lỗi khi đặt phòng:", error) 
+      toast.error(error.response?.data?.message || "Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại.")
     }
   }
 
@@ -291,83 +375,154 @@ const BookingPage = () => {
     return (
       <div className="booking-page booking-page-complete">
         <Header />
-        <div className="booking-container">
-          <div className="container">
-            <motion.div
-              className="booking-complete-card"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="booking-complete-icon"><FaCheckCircle /></div>
-              <h2>Booking Confirmed!</h2>
-              <p>Thank you for your reservation. We look forward to welcoming you.</p>
+        <div className="container">
+          <motion.div
+            className="booking-complete-card"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="booking-complete-icon"><FaCheckCircle /></div>
+            <h2>Đặt phòng thành công!</h2>
+            <p>Cảm ơn bạn đã đặt phòng. Chúng tôi mong được phục vụ bạn.</p>
 
-              <div className="booking-summary-details">
-                <h3>Booking Summary</h3>
-                <div className="detail-row">
-                  <span className="detail-label">Booking ID:</span>
-                  <span className="detail-value">{bookingDetails.Id || bookingDetails.id || 'N/A'}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Room:</span>
-                  <span className="detail-value">{bookingDetails.RoomTypeName || selectedRoom?.roomTypeName || 'N/A'}</span>
-                </div>
-                 <div className="detail-row">
-                  <span className="detail-label">Room Number:</span>
-                  <span className="detail-value">{bookingDetails.RoomNumber || selectedRoom?.roomNumber || 'N/A'}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Check-in:</span>
-                  <span className="detail-value">{format(parseISO(bookingDetails.CheckInDate), "MMMM dd, yyyy, HH:mm")}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Check-out:</span>
-                  <span className="detail-value">{format(parseISO(bookingDetails.CheckOutDate), "MMMM dd, yyyy, HH:mm")}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Guests:</span>
-                  <span className="detail-value">{bookingDetails.Adults}{bookingDetails.Children > 0 ? ` & ${bookingDetails.Children} Children` : ''}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Booked For:</span>
-                  <span className="detail-value">{bookingDetails.CustomerName || `${formData.firstName} ${formData.lastName}`}</span>
-                </div>
-                 <div className="detail-row">
-                  <span className="detail-label">Email:</span>
-                  <span className="detail-value">{bookingDetails.CustomerEmail || formData.email}</span>
-                </div>
-                <div className="detail-row total-amount-row">
-                  <span className="detail-label">Total Amount:</span>
-                  <span className="detail-value">${bookingDetails.TotalAmount?.toFixed(2) || 'N/A'}</span>
-                </div>
-                 <div className="detail-row">
-                  <span className="detail-label">Status:</span>
-                  <span className="detail-value">{bookingDetails.Status || 'N/A'}</span>
-                </div>
-                {bookingDetails.Notes && (
-                    <div className="detail-row">
-                        <span className="detail-label">Your Notes:</span>
-                        <span className="detail-value">{bookingDetails.Notes}</span>
+            <div className="booking-summary-details">
+              <h3>Chi tiết đặt phòng</h3>
+              <div className="detail-row">
+                <span className="detail-label">Mã đặt phòng:</span>
+                <span className="detail-value">#{bookingDetails.Id || bookingDetails.id || 'N/A'}</span>
+              </div>
+              {/* Hiển thị thông tin cơ bản luôn có sẵn */}
+              <div className="detail-row">
+                <span className="detail-label">Phòng:</span>
+                <span className="detail-value">{selectedRoom?.roomTypeName || 'N/A'} - {selectedRoom?.roomNumber || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Nhận phòng:</span>
+                <span className="detail-value">{checkInDate ? format(parseISO(checkInDate), "HH:mm, dd/MM/yyyy") : 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Trả phòng:</span>
+                <span className="detail-value">{checkOutDate ? format(parseISO(checkOutDate), "HH:mm, dd/MM/yyyy") : 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Số khách:</span>
+                <span className="detail-value">{guests} người lớn</span>
+              </div>
+
+              <h3>Thông tin khách hàng</h3>
+              <div className="detail-row">
+                <span className="detail-label">Họ tên:</span>
+                <span className="detail-value">{bookingDetails.CustomerName || `${formData.firstName} ${formData.lastName}`}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Email:</span>
+                <span className="detail-value">{bookingDetails.CustomerEmail || formData.email}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Điện thoại:</span>  
+                <span className="detail-value">{bookingDetails.CustomerPhone || formData.phone}</span>
+              </div>
+
+              {/* Chỉ hiển thị phần dịch vụ nếu có dữ liệu */}
+              {bookingDetails.Services && bookingDetails.Services.length > 0 && (
+                <div className="detail-section">
+                  <h3>Dịch vụ đã chọn</h3>
+                  <div className="services-table">
+                    <div className="service-header">
+                      <span>Tên dịch vụ</span>
+                      <span>Số lượng</span>
+                      <span>Đơn giá</span>
+                      <span>Thành tiền</span>
                     </div>
+                    {bookingDetails.Services.map((service, index) => (
+                      <div key={index} className="service-row">
+                        <span>{service.ServiceName}</span>
+                        <span>{service.Quantity}</span>
+                        <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(service.Price)}</span>
+                        <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(service.Quantity * service.Price)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Hiển thị thông tin thanh toán cơ bản nếu chưa có hoá đơn */}
+              <div className="invoice-section">
+                <h3>Chi tiết thanh toán</h3>
+                {bookingDetails.Invoice ? (
+                  <>
+                    <div className="detail-row">
+                      <span className="detail-label">Số hoá đơn:</span>
+                      <span className="detail-value">#{bookingDetails.Invoice.invoiceNumber}</span>
+                    </div>
+                    <div className="detail-row">
+                      <span className="detail-label">Ngày tạo:</span>
+                      <span className="detail-value">{format(parseISO(bookingDetails.Invoice.createdAt), "dd/MM/yyyy HH:mm")}</span>
+                    </div>
+                    {/* Hiển thị chi tiết từ hoá đơn */}
+                    {bookingDetails.Invoice.items?.map((item, index) => (
+                      <div key={index} className="detail-row">
+                        <span className="detail-label">{item.description}:</span>
+                        <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.amount)}</span>
+                      </div>
+                    ))}
+                    <div className="detail-row total-amount">
+                      <span className="detail-label">Tổng cộng:</span>
+                      <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookingDetails.Invoice.totalAmount)}</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="detail-row">
+                      <span className="detail-label">Giá phòng ({numberOfNights()} đêm):</span>
+                      <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomTotal)}</span>
+                    </div>
+                    {servicesTotal > 0 && (
+                      <div className="detail-row">
+                        <span className="detail-label">Tổng tiền dịch vụ:</span>
+                        <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(servicesTotal)}</span>
+                      </div>
+                    )}
+                    <div className="detail-row">
+                      <span className="detail-label">Thuế ({(taxRate * 100).toFixed(0)}%):</span>
+                      <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(tax)}</span>
+                    </div>
+                    <div className="detail-row total-amount">
+                      <span className="detail-label">Tổng cộng:</span>
+                      <span className="detail-value">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(grandTotalWithServices)}</span>
+                    </div>
+                    <div className="payment-note">
+                      <p>* Chi tiết hoá đơn đầy đủ sẽ được gửi qua email của bạn.</p>
+                      <p>* Vui lòng liên hệ nhân viên nếu bạn cần hoá đơn ngay.</p>
+                    </div>
+                  </>
                 )}
               </div>
 
-              <p className="booking-note">
-                A confirmation email (if applicable) might be sent to {bookingDetails.CustomerEmail || formData.email}. Please check your spam folder.
-                For any questions, please contact our customer service with your Booking ID.
-              </p>
+              {bookingDetails.Notes && (
+                <div className="detail-row">
+                  <span className="detail-label">Ghi chú:</span>
+                  <span className="detail-value">{bookingDetails.Notes}</span>
+                </div>
+              )}
+            </div>
 
-              <div className="booking-actions">
-                <button onClick={() => navigate("/")} className="btn btn-primary">
-                  Return to Homepage
-                </button>
-                <button onClick={() => navigate("/my-bookings")} className="btn btn-secondary">
-                  View My Bookings
-                </button>
-              </div>
-            </motion.div>
-          </div>
+            <p className="booking-note">
+              Email xác nhận sẽ được gửi đến {bookingDetails.CustomerEmail || formData.email}. 
+              Vui lòng kiểm tra cả hộp thư spam.
+              Nếu có bất kỳ thắc mắc nào, hãy liên hệ với chúng tôi và cung cấp mã đặt phòng của bạn.
+            </p>
+
+            <div className="booking-actions">
+              <button onClick={() => navigate("/")} className="btn btn-primary">
+                Về trang chủ
+              </button>
+              <button onClick={() => navigate("/profile")} className="btn btn-secondary">
+                Xem đặt phòng của tôi
+              </button>
+            </div>
+          </motion.div>
         </div>
         <Footer />
       </div>
@@ -475,27 +630,114 @@ const BookingPage = () => {
               <h2>Your Booking Details</h2>
               {selectedRoom ? (
                 <div className="selected-room-summary">
-                  <h3>{selectedRoom.roomTypeName}</h3>
-                  <p>Room: {selectedRoom.roomNumber} | Floor: {selectedRoom.floor}</p>
-                  <p>Price per night: ${selectedRoom.basePrice?.toFixed(2)}</p>
-                  <p>Nights: {numberOfNights()}</p>
-                  <p>Capacity: {selectedRoom.capacity} guests</p>
-                  {selectedRoom.features && selectedRoom.features.length > 0 && (
-                    <div>
-                        <strong>Features:</strong>
-                        <ul>
-                            {selectedRoom.features.map(f => <li key={f.id}>{f.name}{f.value ? `: ${f.value}` : ''}</li>)}
-                        </ul>
+                  {selectedRoom.images && selectedRoom.images.length > 0 ? (
+                    <div className="selected-room-image">
+                      <img 
+                        src={getImageUrl(selectedRoom.images.find(img => img.isPrimary)?.url || selectedRoom.images[0]?.url)} 
+                        alt={selectedRoom.roomTypeName} 
+                      />
                     </div>
-                  )}
-                  <hr />
-                  <h4>Total Estimate: ${grandTotal.toFixed(2)}</h4>
-                  <p className="tax-note">(Includes ${tax.toFixed(2)} tax)</p>
-                  <hr />
+                  ) : null}
+                  <div className="selected-room-info">
+                    <h3>{selectedRoom.roomTypeName}</h3>
+                    <p>Room: {selectedRoom.roomNumber} | Floor: {selectedRoom.floor}</p>
+                    <p>Price per night: ${selectedRoom.basePrice?.toFixed(2)}</p>
+                    <p>Nights: {numberOfNights()}</p>
+                    <p>Capacity: {selectedRoom.capacity} guests</p>
+                    {selectedRoom.features && selectedRoom.features.length > 0 && (
+                      <div>
+                          <strong>Features:</strong>
+                          <ul>
+                              {selectedRoom.features.map(f => <li key={f.id}>{f.name}{f.value ? `: ${f.value}` : ''}</li>)}
+                          </ul>
+                      </div>
+                    )}
+                    <hr />
+                    <h4>Room Total: ${roomTotal.toFixed(2)}</h4>
+                    <p className="tax-note">(Includes ${tax.toFixed(2)} tax)</p>
+                    
+                    {/* Services Section */}                    <div className="additional-services-section">
+                      <h4>Enhance Your Stay with Additional Services</h4>
+                      {servicesLoading && (
+                        <div className="loading-indicator">
+                          <FaSpinner className="spinner" />
+                          <span>Looking for available services...</span>
+                        </div>
+                      )}
+                      {servicesError && (
+                        <div className="error-message">
+                          <FaExclamationCircle />
+                          <span>{servicesError}</span>
+                        </div>
+                      )}
+                      {!servicesLoading && !servicesError && (
+                        <>
+                          {availableServices.length > 0 ? (
+                            <>
+                              <p className="services-intro">Select additional services to make your stay more comfortable:</p>
+                              <div className="services-list">
+                                {availableServices.map(service => (
+                                  <div key={service.id} className="service-item">
+                                    <div className="service-info">
+                                      <h5>{service.name}</h5>
+                                      <p className="service-description">{service.description}</p>
+                                      <p className="service-price">{service.price.toFixed(2)}</p>
+                                    </div>
+                                    <button 
+                                      className={`btn-service-toggle ${selectedServices[service.id] ? 'selected' : ''}`}
+                                      onClick={() => handleServiceToggle(service.id)}
+                                      aria-label={`${selectedServices[service.id] ? 'Remove' : 'Add'} ${service.name}`}
+                                      title={selectedServices[service.id] ? 'Remove service' : 'Add service'}
+                                    >
+                                      {selectedServices[service.id] ? <FaMinus size={16} /> : <FaPlus size={16} />}
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            <p className="info-text">No additional services are available for this room type.</p>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {/* Show selected services summary if any */}                    {Object.keys(selectedServices).length > 0 && (
+                      <div className="selected-services-summary">
+                        <h4>Your Selected Services</h4>
+                        <div className="selected-services-list">
+                          {Object.entries(selectedServices).map(([serviceId, quantity]) => {
+                            const service = availableServices.find(s => s.id === parseInt(serviceId))
+                            if (service && quantity > 0) {
+                              return (
+                                <div key={serviceId} className="selected-service-item">
+                                  <div className="selected-service-info">
+                                    <span className="service-name">{service.name}</span>
+                                    <span className="service-qty">×{quantity}</span>
+                                  </div>
+                                  <span className="selected-service-price">
+                                    ${(service.price * quantity).toFixed(2)}
+                                  </span>
+                                </div>
+                              )
+                            }
+                            return null
+                          })}
+                          <div className="services-total">
+                            <span>Services Total</span>
+                            <span className="total-amount">${servicesTotal.toFixed(2)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <hr />
+                    <h4>Grand Total: ${grandTotalWithServices.toFixed(2)}</h4>
+                  </div>
                 </div>
-              ) : (
-                <p className="info-text">Please select a room from the list on the left.</p>
-              )}
+                ) : (
+                  <p className="info-text">Please select a room from the list on the left.</p>
+                )}
 
               <form onSubmit={(e) => { e.preventDefault(); handleCompleteBooking(); }}>
                 <h3>Guest Information</h3>
@@ -547,7 +789,7 @@ const BookingPage = () => {
                   </button>
                 </div>
                  {errors.room && <div className="error-message">{errors.room}</div>}
-              </form>
+              </form>              {/* Additional services section moved to selected room summary */}
             </div>
           </div>
         </div>

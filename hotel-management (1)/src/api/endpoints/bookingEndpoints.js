@@ -15,9 +15,8 @@ const bookingEndpoints = {
   deleteBooking: (id) => apiClient.delete(`/bookings/${id}`),
 
   // Quản lý trạng thái đặt phòng
-  updateBookingStatus: (id, statusData) => apiClient.put(`/bookings/${id}/status`, statusData),
-  checkIn: (id) => apiClient.post(`/bookings/${id}/check-in`),
-  checkOut: (id) => apiClient.post(`/bookings/${id}/check-out`),
+  updateBookingStatus: (id, statusData) => apiClient.put(`/bookings/${id}/status`, statusData),  checkIn: (id) => apiClient.put(`/bookings/${id}/check-in`),
+  checkOut: (id) => apiClient.put(`/bookings/${id}/check-out`),
   cancelBooking: (id) => apiClient.delete(`/bookings/${id}`),
 
   // Lọc đặt phòng

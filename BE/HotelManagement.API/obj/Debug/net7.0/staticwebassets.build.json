@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "O+ywQi1xAHjNzDlzinKpNBWks0APIUg8TBfsYNP6f1U=",
+  "Hash": "ClDNkCTIWNIY+pRHNqccykmhogafP54ldy5jQD17hjk=",
   "Source": "HotelManagement.API",
   "BasePath": "_content/HotelManagement.API",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "HotelManagement.API\\wwwroot",
       "Source": "HotelManagement.API",
-      "ContentRoot": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\",
       "BasePath": "_content/HotelManagement.API",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\.gitkeep",
+      "Identity": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\.gitkeep",
       "SourceId": "HotelManagement.API",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.API\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\",
       "BasePath": "_content/HotelManagement.API",
       "RelativePath": "images/rooms/.gitkeep",
       "AssetKind": "All",

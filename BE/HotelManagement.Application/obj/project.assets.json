@@ -376,11 +376,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.Application\\HotelManagement.Application.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.Application\\HotelManagement.Application.csproj",
       "projectName": "HotelManagement.Application",
-      "projectPath": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.Application\\HotelManagement.Application.csproj",
+      "projectPath": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.Application\\HotelManagement.Application.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.Application\\obj\\",
+      "outputPath": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -395,8 +395,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.Domain\\HotelManagement.Domain.csproj": {
-              "projectPath": "C:\\Users\\Admin\\FEBEDBHOTEL\\BE\\HotelManagement.Domain\\HotelManagement.Domain.csproj"
+            "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.Domain\\HotelManagement.Domain.csproj": {
+              "projectPath": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.Domain\\HotelManagement.Domain.csproj"
             }
           }
         }

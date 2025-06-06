@@ -10,8 +10,9 @@ import { BOOKING_STATUS, PAYMENT_STATUS, formatCurrency } from '../../../config/
 import './BookingDetailModal.css';
 
 const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
+  // State declarations
   const [bookingDetails, setBookingDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -20,141 +21,218 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
   const [selectedServiceId, setSelectedServiceId] = useState('');
   const [serviceQuantity, setServiceQuantity] = useState(1);
 
+  // Hàm tải lại dữ liệu booking
+  const fetchData = async () => {
+    if (!bookingId || !isOpen) return;
+    setLoading(true);
+    try {
+      const details = await bookingService.getBookingById(bookingId);
+      setBookingDetails(details);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message);
+      console.error("Lỗi tải dữ liệu:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect cho việc tải dữ liệu ban đầu
   useEffect(() => {
-    const fetchData = async () => {
-      if (!bookingId || !isOpen) {
-          setBookingDetails(null);
-          setAvailableServices([]);
-          setShowAddServiceForm(false);
-          return;
-      };
-
-      setLoading(true);
-      setError(null);
-      try {
-        const [detailsData, servicesData] = await Promise.all([
-          bookingService.getBookingById(bookingId),
-          serviceService.getAllServices()
-        ]);
-        
-        setBookingDetails(detailsData);
-        setAvailableServices(servicesData.data || servicesData || []); 
-      } catch (err) {
-        console.error("Lỗi tải dữ liệu modal chi tiết:", err);
-        const errorMsg = "Không thể tải dữ liệu. Vui lòng thử lại.";
-        setError(errorMsg);
-        toast.error(errorMsg);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [bookingId, isOpen]);
 
+  // Load available services when showing add service form
+  useEffect(() => {
+    const loadAvailableServices = async () => {
+      if (showAddServiceForm) {
+        try {
+          const response = await serviceService.getAllServices();
+          setAvailableServices(response.data);
+        } catch (err) {
+          toast.error("Không thể tải danh sách dịch vụ");
+          console.error("Lỗi tải dịch vụ:", err);
+          setShowAddServiceForm(false);
+        }
+      }
+    };
+    loadAvailableServices();
+  }, [showAddServiceForm]);
+
   const handleCheckIn = async () => {
-      if (!bookingId) return;
-      if (!window.confirm(`Bạn có chắc muốn check-in cho đặt phòng #${bookingId}?`)) return;
+    if (!bookingId) return;
+    if (!window.confirm(`Xác nhận CHECK-IN cho đặt phòng #${bookingId}?`)) return;
 
-      setActionLoading(true); 
-      try {
-          await bookingService.checkIn(bookingId);
-          toast.success("Check-in thành công!");
-          onDataChange(); 
-          onClose(); 
-      } catch (err) {
-          toast.error(err.response?.data?.message || err.message || "Lỗi khi check-in.");
-          console.error("Lỗi check-in:", err.response || err);
-      } finally {
-          setActionLoading(false); 
-      }
+    setActionLoading(true);
+    try {
+      await bookingService.checkIn(bookingId);
+      toast.success(`Đã check-in đặt phòng #${bookingId}.`);
+      await fetchData(); // Refresh lại dữ liệu
+      onDataChange(); // Cập nhật danh sách chính
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi khi check-in.");
+      console.error("Lỗi check-in:", err);
+    } finally {
+      setActionLoading(false);
+    }
   };
-  
-   const handleCheckOut = async () => {
-      if (!bookingId) return;
-      if (!window.confirm(`Bạn có chắc muốn check-out cho đặt phòng #${bookingId}?`)) return;
 
-      setActionLoading(true); 
-      try {
-          await bookingService.checkOut(bookingId);
-          toast.success("Check-out thành công!");
-          onDataChange(); 
-          onClose(); 
-      } catch (err) {
-          toast.error(err.response?.data?.message || err.message || "Lỗi khi check-out.");
-          console.error("Lỗi check-out:", err.response || err);
-      } finally {
-         setActionLoading(false);
-      }
+  const handleCheckOut = async () => {
+    if (!bookingId) return;
+    if (!window.confirm(`Xác nhận CHECK-OUT cho đặt phòng #${bookingId}?`)) return;
+
+    setActionLoading(true);
+    try {
+      await bookingService.checkOut(bookingId);
+      toast.success(`Đã check-out đặt phòng #${bookingId}.`);
+      await fetchData(); // Refresh lại dữ liệu
+      onDataChange(); // Cập nhật danh sách chính
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi khi check-out.");
+      console.error("Lỗi check-out:", err);
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   const handleUpdatePayment = async (newStatus) => {
-      if (!bookingId || !newStatus) return;
-       if (!window.confirm(`Cập nhật trạng thái thanh toán thành '${newStatus}'?`)) return;
+    if (!bookingId || !newStatus) return;
 
-      setActionLoading(true);
-      try {
-          await bookingService.updatePaymentStatus(bookingId, { paymentStatus: newStatus });
-          toast.success("Cập nhật thanh toán thành công!");
-          onDataChange();
-          const data = await bookingService.getBookingById(bookingId);
-          setBookingDetails(data);
-      } catch (err) {
-          toast.error(err.response?.data?.message || err.message || "Lỗi cập nhật thanh toán.");
-          console.error("Lỗi cập nhật thanh toán:", err.response || err);
-      } finally {
-          setActionLoading(false);
-      }
-  }
+    // Kiểm tra logic trạng thái thanh toán
+    const validTransitions = {
+      'pending': ['partially_paid', 'paid'],
+      'partially_paid': ['paid', 'pending'],
+      'paid': ['partially_paid'] // Cho phép chuyển về partially_paid khi thêm dịch vụ mới
+    };
+
+    const currentPaymentStatus = bookingDetails?.paymentStatus || 'pending';
+    
+    if (!validTransitions[currentPaymentStatus]?.includes(newStatus)) {
+      toast.error(`Không thể chuyển từ trạng thái ${currentPaymentStatus} sang ${newStatus}`);
+      return;
+    }
+
+    // Kiểm tra trạng thái booking
+    if (['cancelled', 'checked_out'].includes(bookingDetails?.status)) {
+      toast.error("Không thể cập nhật thanh toán cho đặt phòng đã trả phòng hoặc đã hủy");
+      return;
+    }
+
+    if (!window.confirm(`Cập nhật trạng thái thanh toán thành '${newStatus}'?`)) return;
+
+    setActionLoading(true);
+    try {
+      await bookingService.updatePaymentStatus(bookingId, { paymentStatus: newStatus });
+      toast.success("Cập nhật thanh toán thành công!");
+      await fetchData(); // Refresh toàn bộ dữ liệu booking
+      onDataChange(); // Cập nhật danh sách chính
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi cập nhật thanh toán.");
+      console.error("Lỗi cập nhật thanh toán:", err.response || err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
 
   const handleAddServiceSubmit = async (e) => {
-      e.preventDefault();
-      if (!selectedServiceId || serviceQuantity <= 0) {
-          toast.warn("Vui lòng chọn dịch vụ và nhập số lượng hợp lệ.");
-          return;
-      }
+    e.preventDefault();
+    
+    // Kiểm tra điều kiện
+    if (!selectedServiceId || serviceQuantity <= 0) {
+      toast.warn("Vui lòng chọn dịch vụ và nhập số lượng hợp lệ.");
+      return;
+    }
 
-      setActionLoading(true);
-      try {
-          const serviceData = { 
-              serviceId: parseInt(selectedServiceId, 10),
-              quantity: parseInt(serviceQuantity, 10)
-          };
-          await bookingService.addServiceToBooking(bookingId, serviceData);
-          toast.success("Thêm dịch vụ thành công!");
-          setShowAddServiceForm(false);
-          setSelectedServiceId('');
-          setServiceQuantity(1);
-          const updatedDetails = await bookingService.getBookingById(bookingId);
-          setBookingDetails(updatedDetails);
-          onDataChange();
-      } catch (err) {
-           toast.error(err.response?.data?.message || err.message || "Lỗi khi thêm dịch vụ.");
-           console.error("Lỗi thêm dịch vụ:", err.response || err);
-      } finally {
-           setActionLoading(false);
-      }
-  }
+    // Kiểm tra trạng thái booking - chỉ chặn khi đã hủy hoặc đã trả phòng
+    if (['checked_out', 'cancelled'].includes(bookingDetails?.status)) {
+      toast.error("Không thể thêm dịch vụ cho đặt phòng đã trả phòng hoặc đã hủy");
+      return;
+    }
+
+    const selectedService = availableServices.find(s => s.id === parseInt(selectedServiceId));
+    if (!selectedService) {
+      toast.error("Không tìm thấy thông tin dịch vụ");
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const serviceData = { 
+        serviceId: parseInt(selectedServiceId, 10),
+        quantity: parseInt(serviceQuantity, 10)
+      };
+      
+      // Thêm dịch vụ
+      await bookingService.addServiceToBooking(bookingId, serviceData);
+
+      toast.success("Thêm dịch vụ thành công!");
+      
+      // Reset form
+      setShowAddServiceForm(false);
+      setSelectedServiceId('');
+      setServiceQuantity(1);
+      
+      // Refresh data
+      await fetchData();
+      onDataChange();
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi khi thêm dịch vụ.");
+      console.error("Lỗi thêm dịch vụ:", err.response || err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
   
   const handleRemoveService = async (bookingServiceIdToRemove) => {
-      if (!bookingServiceIdToRemove) return;
-       if (!window.confirm(`Bạn có chắc muốn xóa dịch vụ này khỏi đặt phòng?`)) return;
+    if (!bookingServiceIdToRemove) return;
 
-      setActionLoading(true);
-      try {
-          await bookingService.removeServiceFromBooking(bookingId, bookingServiceIdToRemove);
-          toast.success("Xóa dịch vụ thành công!");
-          const updatedDetails = await bookingService.getBookingById(bookingId);
-          setBookingDetails(updatedDetails);
-          onDataChange();
-      } catch (err) {
-           toast.error(err.response?.data?.message || err.message || "Lỗi khi xóa dịch vụ.");
-           console.error("Lỗi xóa dịch vụ:", err.response || err);
-      } finally {
-           setActionLoading(false);
-      }
-  }
+    // Kiểm tra trạng thái booking
+    if (['checked_out', 'cancelled'].includes(bookingDetails?.status)) {
+      toast.error("Không thể xóa dịch vụ của đặt phòng đã trả phòng hoặc đã hủy");
+      return;
+    }
+
+    if (!window.confirm(`Bạn có chắc muốn xóa dịch vụ này khỏi đặt phòng?`)) return;
+
+    setActionLoading(true);
+    try {
+      await bookingService.removeServiceFromBooking(bookingId, bookingServiceIdToRemove);
+      toast.success("Xóa dịch vụ thành công!");
+      await fetchData();
+      onDataChange();
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi khi xóa dịch vụ.");
+      console.error("Lỗi xóa dịch vụ:", err.response || err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
   
+  const handleConfirmBooking = async () => {
+    if (!bookingId) return;
+    if (!bookingDetails) return;
+    
+    // Validate current status
+    if (bookingDetails.status !== "pending") {
+      toast.error("Chỉ có thể xác nhận đặt phòng ở trạng thái chờ xác nhận.");
+      return;
+    }
+
+    if (!window.confirm(`Xác nhận XÁC NHẬN đặt phòng #${bookingId}?`)) return;
+
+    setActionLoading(true);
+    try {
+      await bookingService.updateBooking(bookingId, { status: "confirmed" });
+      toast.success(`Đã xác nhận đặt phòng #${bookingId}.`);
+      await fetchData(); // Refresh data
+      onDataChange(); // Update parent list
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || "Lỗi khi xác nhận đặt phòng.");
+      console.error("Lỗi xác nhận đặt phòng:", err);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   // Hủy đặt phòng
   const handleCancelBooking = async () => {
       if (!bookingId) return;
@@ -165,12 +243,8 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
           // Gọi API updateBooking với status = cancelled
           await bookingService.updateBooking(bookingId, { status: 'cancelled' });
           toast.success(`Đã hủy đặt phòng #${bookingId}.`);
-           // Refresh lại booking details
-          const updatedDetails = await bookingService.getBookingById(bookingId);
-          setBookingDetails(updatedDetails);
-          onDataChange(); // Trigger refresh list chính
-          // Có thể đóng modal sau khi hủy hoặc để người dùng xem trạng thái mới
-          // onClose(); 
+          await fetchData(); // Refresh data after cancellation
+          onDataChange(); // Update main list
       } catch (err) {
            toast.error(err.response?.data?.message || err.message || "Lỗi khi hủy đặt phòng.");
            console.error("Lỗi hủy đặt phòng:", err.response || err);
@@ -281,7 +355,7 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
                 <p>Chưa có dịch vụ nào.</p>
               )}
                
-               {!showAddServiceForm && bookingDetails.status !== 'cancelled' && bookingDetails.status !== 'checked_out' && (
+               {!showAddServiceForm && !['cancelled', 'checked_out'].includes(bookingDetails.status) && (
                   <button 
                       className="add-service-toggle-button" 
                       onClick={() => setShowAddServiceForm(true)} 
@@ -361,17 +435,45 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
         {/* Nút hành động chính */}
         {bookingDetails && !loading && !error && (
              <div className="detail-actions form-actions">
+                {/* Nút Xác nhận đặt phòng */} 
+                {bookingDetails.status === 'pending' && (
+                    <button 
+                        onClick={handleConfirmBooking} 
+                        className='action-button confirm-booking-button' 
+                        disabled={actionLoading}
+                        title="Xác nhận đặt phòng này"
+                    >
+                        Xác nhận đặt phòng
+                    </button>
+                )}
+                
                 {/* Nút Check-in */} 
                 {bookingDetails.status === 'confirmed' && (
-                    <button onClick={handleCheckIn} className='action-button checkin-button' disabled={actionLoading}>Check-in</button>
+                    <button 
+                        onClick={handleCheckIn} 
+                        className='action-button checkin-button' 
+                        disabled={actionLoading}
+                        title="Check-in cho đặt phòng này"
+                    >
+                        Check-in
+                    </button>
                 )}
+                
                 {/* Nút Check-out */} 
-                 {bookingDetails.status === 'checked_in' && (
-                    <button onClick={handleCheckOut} className='action-button checkout-button' disabled={actionLoading}>Check-out</button>
+                {bookingDetails.status === 'checked_in' && (
+                    <button 
+                        onClick={handleCheckOut} 
+                        className='action-button checkout-button' 
+                        disabled={actionLoading}
+                        title="Check-out cho đặt phòng này"
+                    >
+                        Check-out
+                    </button>
                 )}
+                
                 {/* Nút Hủy Đặt phòng */} 
-                 {['pending', 'confirmed'].includes(bookingDetails.status) && (
-                     <button 
+                {['pending', 'confirmed'].includes(bookingDetails.status) && (
+                    <button 
                         onClick={handleCancelBooking} 
                         className='action-button cancel-booking-button' 
                         disabled={actionLoading}
@@ -379,10 +481,16 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
                     >
                         Hủy đặt phòng
                     </button>
-                 )}
-                 <button type="button" className="cancel-button" onClick={onClose} disabled={actionLoading}>
+                )}
+                
+                <button 
+                    type="button" 
+                    className="cancel-button" 
+                    onClick={onClose} 
+                    disabled={actionLoading}
+                >
                     Đóng
-                 </button>
+                </button>
              </div>
         )}
          {!bookingDetails && !loading && !error && (
@@ -398,4 +506,4 @@ const BookingDetailModal = ({ bookingId, isOpen, onClose, onDataChange }) => {
   );
 };
 
-export default BookingDetailModal; 
+export default BookingDetailModal;
