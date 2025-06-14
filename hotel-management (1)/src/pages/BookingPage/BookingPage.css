@@ -744,7 +744,7 @@
 
 .service-row:hover::before {
   background: #3b82f6;
-
+}
 /* Total Amount Section */
 .invoice-section {
   background: linear-gradient(to right, #f8fafc, #ffffff);

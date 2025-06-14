@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\images\\rooms\\.gitkeep"
     },
     {
+      "Id": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\room_1_638848667762085966.png",
+      "PackagePath": "staticwebassets\\images\\rooms\\room_1_638848667762085966.png"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.HotelManagement.API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

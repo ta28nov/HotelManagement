@@ -45,7 +45,7 @@ const BookingPage = () => {
 
   const queryParams = new URLSearchParams(location.search)
   const queryCheckIn = queryParams.get("checkIn")
-  const queryCheckOut = queryParams.get("checkOut")
+  const queryCheckOut = queryParams.get("roomId")
   const queryRoomId = queryParams.get("roomId")
   const queryGuests = queryParams.get("guests")
 
@@ -333,40 +333,40 @@ const BookingPage = () => {
       const response = await bookingEndpoints.createBooking(bookingPayload)
       if (response.data && response.data.bookingId) {
         toast.success("Đặt phòng thành công!")
+        
         try {
-          // Lấy chi tiết booking để hiển thị
+          console.log("Đang lấy chi tiết đặt phòng:", response.data.bookingId)
           const detailsResponse = await bookingEndpoints.getBookingById(response.data.bookingId)
-          setBookingDetails(detailsResponse.data)
+          
+          if (detailsResponse.data) {
+            setBookingDetails(detailsResponse.data)
+            console.log("Đã nhận chi tiết đặt phòng:", detailsResponse.data)
 
-          // Đợi 1 giây để đảm bảo booking đã được tạo hoàn toàn
-          await new Promise(resolve => setTimeout(resolve, 1000))
-
-          // Tạo hóa đơn cho đặt phòng
-          await bookingEndpoints.createInvoice(response.data.bookingId)
-
-          // Đợi 0.5 giây để đảm bảo hóa đơn đã được tạo
-          await new Promise(resolve => setTimeout(resolve, 500))
-
-          // Lấy hóa đơn để hiển thị
-          const invoiceResponse = await bookingEndpoints.getInvoice(response.data.bookingId)
-          if (invoiceResponse.data) {
-            setBookingDetails(prevDetails => ({
-              ...prevDetails,
-              Invoice: invoiceResponse.data
-            }))
+            try {
+              await bookingEndpoints.createInvoice(response.data.bookingId)
+              const invoiceResponse = await bookingEndpoints.getInvoice(response.data.bookingId)
+              if (invoiceResponse.data) {
+                setBookingDetails(prevDetails => ({
+                  ...prevDetails,
+                  Invoice: invoiceResponse.data
+                }))
+              }
+            } catch (invoiceError) {
+              console.error("Lỗi khi tạo hoặc lấy hóa đơn:", invoiceError)
+            }
           }
         } catch (detailsError) {
-          console.error("Error fetching booking details or creating invoice:", detailsError)
-          // Vẫn hiển thị thông báo thành công vì đặt phòng đã thành công
-          toast.warning("Đặt phòng thành công nhưng không thể tạo hóa đơn. Vui lòng liên hệ nhân viên.")
+          console.error("Lỗi chi tiết:", detailsError)
         }
+
+        // Luôn hiển thị trang hoàn thành khi đặt phòng thành công
         setBookingComplete(true)
         window.scrollTo(0, 0)
       } else {
         toast.error("Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại.")
       }
     } catch (error) {
-      console.error("Lỗi khi đặt phòng:", error) 
+      console.error("Lỗi khi đặt phòng:", error)
       toast.error(error.response?.data?.message || "Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại.")
     }
   }

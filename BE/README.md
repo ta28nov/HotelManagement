@@ -129,7 +129,7 @@ GET /api/reports/monthly-revenue: Lấy báo cáo doanh thu theo tháng
 GET /api/reports/occupancy: Lấy báo cáo công suất phòng
 
 
-Lưu ý: Một số chức năng như cập nhật trạng thái, hủy đặt phòng, và quản lý hóa đơn được tích hợp vào các API hiện có thay vì có API riêng biệt.
+
 
 ## Cấu trúc cơ sở dữ liệu
 

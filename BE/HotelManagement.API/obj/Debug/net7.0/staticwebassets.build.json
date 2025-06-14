@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ClDNkCTIWNIY+pRHNqccykmhogafP54ldy5jQD17hjk=",
+  "Hash": "fSriY/xjS7bzLYQb+CIGgOwh/AQUDMfLJDpYHdQB0D4=",
   "Source": "HotelManagement.API",
   "BasePath": "_content/HotelManagement.API",
   "Mode": "Default",
@@ -32,6 +32,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\rooms\\.gitkeep"
+    },
+    {
+      "Identity": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\images\\rooms\\room_1_638848667762085966.png",
+      "SourceId": "HotelManagement.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admin\\HotelManagement\\BE\\HotelManagement.API\\wwwroot\\",
+      "BasePath": "_content/HotelManagement.API",
+      "RelativePath": "images/rooms/room_1_638848667762085966.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\rooms\\room_1_638848667762085966.png"
     }
   ]
 }
