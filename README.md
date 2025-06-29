@@ -2,6 +2,14 @@
 
 Hệ thống quản lý khách sạn là một ứng dụng backend được xây dựng theo kiến trúc Clean Architecture sử dụng ASP.NET Core Web API, cung cấp các API để quản lý khách sạn, bao gồm quản lý phòng, đặt phòng, khách hàng, dịch vụ và báo cáo.
 
+
+## 🎥 Demo Video
+
+👉 [Watch Demo Video]((https://youtu.be/Pe094_87R9I))  
+*A complete walkthrough of the ASP.NET Core Hotel Management System using Clean Architecture*
+
+
+
 ## Yêu cầu hệ thống
 
 - .NET 7.0 SDK hoặc cao hơn
