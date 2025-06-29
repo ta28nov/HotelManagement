@@ -5,7 +5,7 @@ Hệ thống quản lý khách sạn là một ứng dụng backend được xâ
 
 ## 🎥 Demo Video
 
-👉 [Watch Demo Video]((https://youtu.be/Pe094_87R9I))  
+👉 [Watch Demo Video]    https://www.youtube.com/watch?v=Pe094_87R9I
 *A complete walkthrough of the ASP.NET Core Hotel Management System using Clean Architecture*
 
 
